@@ -73,8 +73,8 @@ public final class Constants {
     public static final double angleGearRatio = chosenModule.angleGearRatio;
 
     /* Motor Inverts */
-    public static final InvertedValue angleMotorInvert = chosenModule.angleMotorInvert;
-    public static final InvertedValue driveMotorInvert = chosenModule.driveMotorInvert;
+    public static final boolean angleMotorInvert = chosenModule.angleMotorInvert;
+    public static final boolean driveMotorInvert = chosenModule.driveMotorInvert;
 
     /* Angle Encoder Invert */
     public static final SensorDirectionValue canCoderInvert = chosenModule.canCoderInvert;

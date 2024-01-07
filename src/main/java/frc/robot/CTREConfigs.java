@@ -52,18 +52,18 @@ public final class CTREConfigs {
         swerveDriveFXConfig.Slot0 = slot0Configs;
         swerveDriveFXConfig.CurrentLimits = currentLimitsConfigs;
         
-        OpenLoopRampsConfigs openLoopRampsConfigs = new OpenLoopRampsConfigs();
-        openLoopRampsConfigs.DutyCycleOpenLoopRampPeriod = Constants.SwerveConstants.openLoopRamp;
-        openLoopRampsConfigs.TorqueOpenLoopRampPeriod = Constants.SwerveConstants.openLoopRamp;
-        openLoopRampsConfigs.VoltageOpenLoopRampPeriod = Constants.SwerveConstants.openLoopRamp;
+        OpenLoopRampsConfigs openLoopRampConfigs = new OpenLoopRampsConfigs();
+        openLoopRampConfigs.DutyCycleOpenLoopRampPeriod = Constants.SwerveConstants.openLoopRamp;
+        openLoopRampConfigs.TorqueOpenLoopRampPeriod = Constants.SwerveConstants.openLoopRamp;
+        openLoopRampConfigs.VoltageOpenLoopRampPeriod = Constants.SwerveConstants.openLoopRamp;
 
-        ClosedLoopRampsConfigs closedLoopRampsConfigs = new ClosedLoopRampsConfigs();
-        closedLoopRampsConfigs.DutyCycleClosedLoopRampPeriod = Constants.SwerveConstants.closedLoopRamp;
-        closedLoopRampsConfigs.TorqueClosedLoopRampPeriod = Constants.SwerveConstants.closedLoopRamp;
-        closedLoopRampsConfigs.VoltageClosedLoopRampPeriod = Constants.SwerveConstants.closedLoopRamp;
+        ClosedLoopRampsConfigs closedLoopRampConfigs = new ClosedLoopRampsConfigs();
+        closedLoopRampConfigs.DutyCycleClosedLoopRampPeriod = Constants.SwerveConstants.closedLoopRamp;
+        closedLoopRampConfigs.TorqueClosedLoopRampPeriod = Constants.SwerveConstants.closedLoopRamp;
+        closedLoopRampConfigs.VoltageClosedLoopRampPeriod = Constants.SwerveConstants.closedLoopRamp;
 
-        swerveDriveFXConfig.OpenLoopRamps = openLoopRampsConfigs;
-        swerveDriveFXConfig.ClosedLoopRamps = closedLoopRampsConfigs;
+        swerveDriveFXConfig.OpenLoopRamps = openLoopRampConfigs;
+        swerveDriveFXConfig.ClosedLoopRamps = closedLoopRampConfigs;
         
         /* Swerve CANCoder Configuration */
         // CANcoder is always initialized to absolute position on boot in Phoenix 6 - https://www.chiefdelphi.com/t/what-kind-of-encoders-are-built-into-the-kraken-motors/447253/7

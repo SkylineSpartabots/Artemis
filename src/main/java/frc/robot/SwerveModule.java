@@ -24,6 +24,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ControlModeValue;
 import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
@@ -96,7 +97,8 @@ public class SwerveModule {
     }
 
     private Rotation2d getAngle(){
-        return Rotation2d.fromDegrees(Conversions.falconToDegrees(mAngleMotor.getPosition().getValueAsDouble(), Constants.SwerveConstants.angleGearRatio));
+        // getPosition() returns from 0-1
+        return Rotation2d.fromDegrees(mAngleMotor.getEncoder().getPosition() * 360);
     }
 
     public Rotation2d getCanCoder(){
@@ -106,26 +108,35 @@ public class SwerveModule {
     private void resetToAbsolute(){
         double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset.getDegrees(), Constants.SwerveConstants.angleGearRatio);
         // check later no idea if this is right
-        mAngleMotor.setPosition(absolutePosition);
+        mAngleMotor.getEncoder().setPosition(absolutePosition);
     }
 
     private void configAngleEncoder(){    
         angleEncoder.getConfigurator().apply(CTREConfigs.swerveCanCoderConfig);
-    }
+    }   
 
     private void configAngleMotor(){
-        mAngleMotor.getConfigurator().apply(CTREConfigs.swerveAngleFXConfig);
+        mAngleMotor.setSmartCurrentLimit(Constants.SwerveConstants.anglePeakCurrentLimit);
+        mAngleMotor.setInverted(Constants.SwerveConstants.angleMotorInvert);
+        mAngleMotor.setIdleMode(IdleMode.kBrake);
         resetToAbsolute();
     }
 
-    private void configDriveMotor(){        
-        mDriveMotor.getConfigurator().apply(CTREConfigs.swerveDriveFXConfig);
-        //mDriveMotor.setSelectedSensorPosition(0);
+    private void configDriveMotor(){   
+        mDriveMotor.setSmartCurrentLimit(Constants.SwerveConstants.drivePeakCurrentLimit);
+        mDriveMotor.setInverted(Constants.SwerveConstants.driveMotorInvert);
+        mDriveMotor.setIdleMode(IdleMode.kBrake);
+        
+        mDriveMotor.setOpenLoopRampRate(Constants.SwerveConstants.openLoopRamp);
+        mDriveMotor.setClosedLoopRampRate(Constants.SwerveConstants.closedLoopRamp);
+
+        mDriveMotor.getEncoder().setPosition(0);
     }
 
     public SwerveModuleState getState(){
         return new SwerveModuleState(
-            Conversions.falconToMPS(mDriveMotor.getVelocity().getValueAsDouble(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio), 
+            Conversions.falconToMPS(mDriveMotor.getEncoder().getVelocity(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio), 
+
             getAngle()
         ); 
     }
@@ -137,6 +148,7 @@ public class SwerveModule {
 
     public SwerveModulePosition getPosition(){
         return new SwerveModulePosition(
+            Conversions.falconToMeters(mDriveMotor.getEncoder()., Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio),
             Conversions.falconToMeters(mDriveMotor.getPosition().getValueAsDouble(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio), 
             getAngle()
         );
