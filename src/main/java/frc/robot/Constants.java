@@ -26,14 +26,20 @@ import frc.lib.util.SwerveModuleConstants;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+  }
+
+  public static final class HardwarePorts {
+    public static final int flywheelLeaderM = 21;
+    public static final int flywheelFollowerM = 22;
   }
   
   //Dummy values, need to find/calculate
   public static final List<Translation2d> kReferenceTranslations = List.of(
-              new Translation2d(1, 0),
-              new Translation2d(3, 3)
+        new Translation2d(1, 0),
+        new Translation2d(3, 3)
       );
       
   public static final class Ports{
