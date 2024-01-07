@@ -27,7 +27,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     
     private static DrivetrainSubsystem instance = null;
     private static double expectedVelocity;
-    // FIXME Measure the drivetrain's maximum velocity or calculate the theoretical.
+    // TODO: Measure the drivetrain's maximum velocity or calculate the theoretical.
     //  The formula for calculating the theoretical maximum velocity is:
     //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
     //  By default this value is setup for a Mk3 standard module using Falcon500s to drive.
