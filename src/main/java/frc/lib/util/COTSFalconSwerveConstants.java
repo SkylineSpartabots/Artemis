@@ -5,6 +5,8 @@ https://github.com/Team364/BaseFalconSwerve
 
 package frc.lib.util;
 
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 import edu.wpi.first.math.util.Units;
 
 /* Contains values and required settings for common COTS swerve modules. */
@@ -19,9 +21,9 @@ public class COTSFalconSwerveConstants {
     public final double angleKF;
     public final boolean driveMotorInvert;
     public final boolean angleMotorInvert;
-    public final boolean canCoderInvert;
+    public final SensorDirectionValue canCoderInvert;
 
-    public COTSFalconSwerveConstants(double wheelDiameter, double angleGearRatio, double driveGearRatio, double angleKP, double angleKI, double angleKD, double angleKF, boolean driveMotorInvert, boolean angleMotorInvert, boolean canCoderInvert){
+    public COTSFalconSwerveConstants(double wheelDiameter, double angleGearRatio, double driveGearRatio, double angleKP, double angleKI, double angleKD, double angleKF, boolean driveMotorInvert, boolean angleMotorInvert, SensorDirectionValue canCoderInvert){
         this.wheelDiameter = wheelDiameter;
         this.wheelCircumference = wheelDiameter * Math.PI;
         this.angleGearRatio = angleGearRatio;
@@ -49,7 +51,7 @@ public class COTSFalconSwerveConstants {
  
         boolean driveMotorInvert = false;
         boolean angleMotorInvert = false;
-        boolean canCoderInvert = false;
+        SensorDirectionValue canCoderInvert = SensorDirectionValue.Clockwise_Positive;
         return new COTSFalconSwerveConstants(wheelDiameter, angleGearRatio, driveGearRatio, angleKP, angleKI, angleKD, angleKF, driveMotorInvert, angleMotorInvert, canCoderInvert);
     }
 
@@ -67,7 +69,7 @@ public class COTSFalconSwerveConstants {
  
         boolean driveMotorInvert = true;
         boolean angleMotorInvert = false;
-        boolean canCoderInvert = false;
+        SensorDirectionValue canCoderInvert = SensorDirectionValue.Clockwise_Positive;
         return new COTSFalconSwerveConstants(wheelDiameter, angleGearRatio, driveGearRatio, angleKP, angleKI, angleKD, angleKF, driveMotorInvert, angleMotorInvert, canCoderInvert);
     }
 
@@ -85,7 +87,7 @@ public class COTSFalconSwerveConstants {
 
         boolean driveMotorInvert = false;
         boolean angleMotorInvert = true;
-        boolean canCoderInvert = false;
+        SensorDirectionValue canCoderInvert = SensorDirectionValue.Clockwise_Positive;
         return new COTSFalconSwerveConstants(wheelDiameter, angleGearRatio, driveGearRatio, angleKP, angleKI, angleKD, angleKF, driveMotorInvert, angleMotorInvert, canCoderInvert);
     }
 

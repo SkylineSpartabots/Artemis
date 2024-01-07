@@ -108,7 +108,7 @@ public class SwerveModule {
     }
 
     private void configAngleEncoder(){    
-
+        angleEncoder.getConfigurator().apply(Robot.ctreConfigs.swerveCanCoderConfig);
         angleEncoder.configAllSettings(Robot.ctreConfigs.swerveCanCoderConfig);
     }
 

@@ -5,12 +5,7 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.CANCoderConfiguration;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import com.ctre.phoenix.sensors.SensorTimeBase;
+
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -25,7 +20,7 @@ public final class CTREConfigs {
     public TalonFXConfiguration swerveDriveFXConfig;
     public CANcoderConfiguration swerveCanCoderConfig;
 
-    public CTREConfigs(){
+    public CTREConfigs() {
         swerveAngleFXConfig = new TalonFXConfiguration();
         swerveDriveFXConfig = new TalonFXConfiguration();
         swerveCanCoderConfig = new CANcoderConfiguration();
@@ -65,8 +60,12 @@ public final class CTREConfigs {
         swerveDriveFXConfig.ClosedLoopRamps = closedLoopRampsConfigs;
         
         /* Swerve CANCoder Configuration */
-        // swerveCanCoderConfig.MagnetSensor;
-        // MagnetSensorConfigs magnetSensorConfigs = new MagnetSensorConfigs();
-        // magnetSensorConfigs.AbsoluteSensorRange = AbsoluteSensorRangeValue.Uns
+        // CANcoder is always initialized to absolute position on boot in Phoenix 6 - https://www.chiefdelphi.com/t/what-kind-of-encoders-are-built-into-the-kraken-motors/447253/7
+
+        MagnetSensorConfigs magnetSensorConfigs = new MagnetSensorConfigs();
+        magnetSensorConfigs.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
+        magnetSensorConfigs.SensorDirection = Constants.SwerveConstants.canCoderInvert;
+        
+        swerveCanCoderConfig.MagnetSensor = magnetSensorConfigs;
     }
 }

@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -73,7 +75,7 @@ public final class Constants {
     public static final boolean driveMotorInvert = chosenModule.driveMotorInvert;
 
     /* Angle Encoder Invert */
-    public static final boolean canCoderInvert = chosenModule.canCoderInvert;
+    public static final SensorDirectionValue canCoderInvert = chosenModule.canCoderInvert;
 
     /* Swerve Current Limitting */ // DID NOT CHANGE
     public static final int angleContinuousCurrentLimit = 25;
