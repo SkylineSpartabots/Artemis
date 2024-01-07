@@ -23,6 +23,8 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ControlModeValue;
+import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
 public class SwerveModule {
@@ -44,8 +46,8 @@ public class SwerveModule {
     private Rotation2d angleOffset;
     private Rotation2d lastAngle;
 
-    private TalonFX mAngleMotor;
-    private TalonFX mDriveMotor;
+    private CANSparkFlex mAngleMotor;
+    private CANSparkFlex mDriveMotor;
     private CANcoder angleEncoder;
 
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.SwerveConstants.driveKS, Constants.SwerveConstants.driveKV, Constants.SwerveConstants.driveKA);
@@ -59,11 +61,11 @@ public class SwerveModule {
         configAngleEncoder();
 
         /* Angle Motor Config */
-        mAngleMotor = new TalonFX(moduleConstants.angleMotorID, "2976 CANivore");
+        mAngleMotor = new CANSparkFlex(moduleConstants.angleMotorID, MotorType.kBrushless);
         configAngleMotor();
 
         /* Drive Motor Config */
-        mDriveMotor = new TalonFX(moduleConstants.driveMotorID, "2976 CANivore");
+        mDriveMotor = new CANSparkFlex(moduleConstants.driveMotorID, MotorType.kBrushless);
         configDriveMotor();
 
         lastAngle = getState().angle;
