@@ -4,20 +4,19 @@
 
 package frc.robot;
 
-import java.util.List;
+
 
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
-import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
-import frc.lib.util.COTSFalconSwerveConstants;
-import frc.lib.util.SwerveModuleConstants;
+
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -132,6 +131,10 @@ public final class Constants {
     public static final double maxSpeed = 4.5; 
     /** Radians per Second */
     public static final double maxAngularVelocity = 7.0; 
+
+    /* Motor Neutral Modes */
+    public static final NeutralModeValue driveNeutralMode = NeutralModeValue.Brake;
+    public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Brake;
  
     /* Module Specific Constants - TO BE DONE FOR ARTEMIS*/ 
     /* Front Left Module - Module 0 */
