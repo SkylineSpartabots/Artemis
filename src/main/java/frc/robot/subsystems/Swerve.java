@@ -163,4 +163,9 @@ public class Swerve extends SubsystemBase {
                 && (Math.abs(getPose().getRotation().getDegrees()
                         - goalPose.getRotation().getDegrees()) < rotTolerance);
     }
+
+    @Override
+    public void periodic() {
+
+    }
 }
