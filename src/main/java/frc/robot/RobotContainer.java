@@ -4,15 +4,10 @@
 
 package frc.robot;
 
-import frc.lib.util.Controller;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ClimbSubsystem;
-import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -31,16 +26,8 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
-  // The robot's subsystems and commands are defined here...
-  private DrivetrainSubsystem m_drivetrainSubsystem;
-  private ShooterSubsystem m_shooterSubsystem;
-  private ClimbSubsystem m_climbSubsystem;
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_drivetrainSubsystem = DrivetrainSubsystem.getInstance();
-    m_shooterSubsystem = ShooterSubsystem.getInstance();
-    m_climbSubsystem = ClimbSubsystem.getInstance();
     // Configure the trigger bindings
     configureBindings();
   }
@@ -62,12 +49,6 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-  }
-
-  private static final Controller m_controller = new Controller(new XboxController(0));
-
-  public static Controller getController(){
-    return m_controller;
   }
 
   /**
