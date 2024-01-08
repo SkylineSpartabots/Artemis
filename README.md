@@ -1,1 +1,1 @@
-The 2024 Spartabots Code for the Artemis.
+The repository for Artemis, Team 2976 The Spartabots' robot for the 2024 FIRST Robotics Competition. 
