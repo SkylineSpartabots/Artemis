@@ -9,39 +9,20 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DutyCycle;
-import frc.lib.math.Conversions;
+import frc.lib.math.FalconConversions;
+import frc.lib.math.NEOConversions;
 import frc.lib.util.CTREModuleState;
 import frc.lib.util.SwerveModuleConstants;
 
-import com.ctre.phoenix6.controls.ControlRequest;
-import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix6.controls.PositionDutyCycle;
-import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.controls.VelocityDutyCycle;
-import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
+
 import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.ControlModeValue;
+
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
 public class SwerveModule {
-
-    // Control requests
-    // Reuse these, don't make more
-    final DutyCycleOut dutyCycleRequest = new DutyCycleOut(0);
-    final VoltageOut voltageOutRequest = new VoltageOut(0);
-    // ControlMode.Position without voltage compensation
-    final PositionDutyCycle positionDutyCycleRequest = new PositionDutyCycle(0);
-    // ControlMode.Position with voltage compensation
-    final PositionVoltage positionVoltageRequest = new PositionVoltage(0);
-    // ControlMode.Velocity without voltage compensation
-    final VelocityDutyCycle velocityDutyCycle = new VelocityDutyCycle(0);
-    // ControlMode.Velocity with voltage compensation
-    final VelocityVoltage velocityVoltage = new VelocityVoltage(0);
 
     public int moduleNumber;
     private Rotation2d angleOffset;
@@ -85,20 +66,19 @@ public class SwerveModule {
             mDriveMotor.setControl(dutyCycleRequest.withOutput(percentOutput));
         }
         else {
-            double velocity = Conversions.MPSToFalcon(desiredState.speedMetersPerSecond, Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio);
+            double velocity = FalconConversions.MPSToFalcon(desiredState.speedMetersPerSecond, Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio);
             mDriveMotor.setControl(velocityDutyCycle.withVelocity(velocity));
         }
     }
 
     private void setAngle(SwerveModuleState desiredState){
         Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.SwerveConstants.maxSpeed * 0.01)) ? lastAngle : desiredState.angle; //Prevent rotating module if speed is less then 1%. Prevents Jittering.
-        mAngleMotor.setControl(positionDutyCycleRequest.withPosition(Conversions.degreesToFalcon(angle.getDegrees(), Constants.SwerveConstants.angleGearRatio)));
+        mAngleMotor.setControl(positionDutyCycleRequest.withPosition(FalconConversions.degreesToFalcon(angle.getDegrees(), Constants.SwerveConstants.angleGearRatio)));
         lastAngle = angle;
     }
 
     private Rotation2d getAngle(){
-        // getPosition() returns from 0-1
-        return Rotation2d.fromDegrees(mAngleMotor.getEncoder().getPosition() * 360);
+        return Rotation2d.fromDegrees(FalconConversions.CANcoderToDegrees(angleEncoder.getPosition().getValueAsDouble(), Constants.SwerveConstants.angleEncoderGearRatio));
     }
 
     public Rotation2d getCanCoder(){
@@ -106,7 +86,7 @@ public class SwerveModule {
     }
 
     private void resetToAbsolute(){
-        double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset.getDegrees(), Constants.SwerveConstants.angleGearRatio);
+        double absolutePosition = NEOConversions.degreesToNEO(getCanCoder().getDegrees() - angleOffset.getDegrees(), Constants.SwerveConstants.angleGearRatio);
         // check later no idea if this is right
         mAngleMotor.getEncoder().setPosition(absolutePosition);
     }
@@ -135,7 +115,7 @@ public class SwerveModule {
 
     public SwerveModuleState getState(){
         return new SwerveModuleState(
-            Conversions.falconToMPS(mDriveMotor.getEncoder().getVelocity(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio), 
+            FalconConversions.falconToMPS(mDriveMotor.getEncoder().getVelocity(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio), 
 
             getAngle()
         ); 
@@ -148,7 +128,7 @@ public class SwerveModule {
 
     public SwerveModulePosition getPosition(){
         return new SwerveModulePosition(
-            Conversions.falconToMeters(mDriveMotor.getEncoder().getPosition(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio),
+            FalconConversions.falconToMeters(mDriveMotor.getEncoder().getPosition(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio),
             getAngle()
         );
     }

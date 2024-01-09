@@ -5,7 +5,7 @@ https://github.com/Team364/BaseFalconSwerve
 
 package frc.lib.math;
 
-public class Conversions {
+public class FalconConversions {
 
     /**
      * @param positionCounts CANCoder Position Counts
@@ -59,7 +59,7 @@ public class Conversions {
      * @param RPM       RPM of mechanism
      * @param gearRatio Gear Ratio between Falcon and Mechanism (set to 1 for Falcon
      *                  RPM)
-     * @return RPM of Mechanism
+     * @return Falcon Velocity Counts
      */
     public static double RPMToFalcon(double RPM, double gearRatio) {
         double motorRPM = RPM * gearRatio;
