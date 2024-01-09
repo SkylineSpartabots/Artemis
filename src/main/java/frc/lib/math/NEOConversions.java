@@ -2,8 +2,8 @@ package frc.lib.math;
 
 public class NEOConversions {
     /**
-     * @param revolutions    NEO Revolutions
-     * @param gearRatio      Gear Ratio between NEO and Mechanism
+     * @param revolutions NEO Revolutions
+     * @param gearRatio   Gear Ratio between NEO and Mechanism
      * @return Degrees of Rotation of Mechanism
      */
     public static double NEOToDegrees(double revolutions, double gearRatio) {
@@ -20,8 +20,8 @@ public class NEOConversions {
     }
 
     /**
-     * @param NEORPM         NEO RPM
-     * @param gearRatio      Gear Ratio between NEO and Mechanism
+     * @param NEORPM    NEO RPM
+     * @param gearRatio Gear Ratio between NEO and Mechanism
      * @return RPM of Mechanism
      */
     public static double NEOToMechanismRPM(double NEORPM, double gearRatio) {
@@ -38,9 +38,9 @@ public class NEOConversions {
     }
 
     /**
-     * @param NEORPM         NEO RPM
-     * @param circumference  Circumference of Wheel
-     * @param gearRatio      Gear Ratio between NEO and Mechanism 
+     * @param NEORPM        NEO RPM
+     * @param circumference Circumference of Wheel
+     * @param gearRatio     Gear Ratio between NEO and Mechanism 
      * @return Meters Per Second
      */
     public static double NEOToMPS(double NEORPM, double circumference, double gearRatio) {
@@ -62,9 +62,9 @@ public class NEOConversions {
     }
 
     /**
-     * @param rotations      NEO rotations
-     * @param circumference  Circumference of Wheel
-     * @param gearRatio      Gear Ratio between NEO and Wheel
+     * @param rotations     NEO rotations
+     * @param circumference Circumference of Wheel
+     * @param gearRatio     Gear Ratio between NEO and Wheel
      * @return Meters
      */
     public static double NEOToMeters(double rotations, double circumference, double gearRatio) {
