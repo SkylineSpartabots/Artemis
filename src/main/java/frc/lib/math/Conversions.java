@@ -23,7 +23,7 @@ public class Conversions {
     }
 
     /**
-     * @param rotations    Falcon Rotations
+     * @param rotations Falcon Rotations
      * @param gearRatio Gear Ratio between Falcon and Mechanism
      * @return Degrees of Rotation of Mechanism
      */
