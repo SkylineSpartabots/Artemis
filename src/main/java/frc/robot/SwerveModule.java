@@ -5,8 +5,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.lib.math.FalconConversions;
-import frc.lib.math.NEOConversions;
+import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -68,7 +67,7 @@ public class SwerveModule {
             mDriveMotor.set(percentOutput);
         }
         else {
-            double velocity = NEOConversions.MPSToNEO(desiredState.speedMetersPerSecond, Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio);
+            double velocity = Conversions.MPSToMotor(desiredState.speedMetersPerSecond, Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio);
             mDriveMotor.getPIDController().setReference(velocity, ControlType.kVelocity);
         }
     }
@@ -78,12 +77,12 @@ public class SwerveModule {
      */
     private void setAngle(SwerveModuleState desiredState){
         Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.SwerveConstants.maxSpeed * 0.01)) ? lastAngle : desiredState.angle; //Prevent rotating module if speed is less then 1%. Prevents Jittering.
-        mAngleMotor.getPIDController().setReference(NEOConversions.degreesToNEO(angle.getDegrees(), Constants.SwerveConstants.angleGearRatio), ControlType.kPosition);
+        mAngleMotor.getPIDController().setReference(Conversions.degreesToMotor(angle.getDegrees(), Constants.SwerveConstants.angleGearRatio), ControlType.kPosition);
         lastAngle = angle;
     }
 
     private Rotation2d getAngle(){
-        return Rotation2d.fromDegrees(FalconConversions.CANcoderToDegrees(angleEncoder.getPosition().getValueAsDouble(), Constants.SwerveConstants.angleEncoderGearRatio));
+        return Rotation2d.fromDegrees(Conversions.CANcoderToDegrees(angleEncoder.getPosition().getValueAsDouble(), Constants.SwerveConstants.angleEncoderGearRatio));
     }
 
     public Rotation2d getCanCoder(){
@@ -91,7 +90,7 @@ public class SwerveModule {
     }
 
     private void resetToAbsolute(){
-        double absolutePosition = NEOConversions.degreesToNEO(getCanCoder().getDegrees() - angleOffset.getDegrees(), Constants.SwerveConstants.angleGearRatio);
+        double absolutePosition = Conversions.degreesToMotor(getCanCoder().getDegrees() - angleOffset.getDegrees(), Constants.SwerveConstants.angleGearRatio);
         mAngleMotor.getEncoder().setPosition(absolutePosition);
     }
 
@@ -140,8 +139,7 @@ public class SwerveModule {
      */
     public SwerveModuleState getState(){
         return new SwerveModuleState(
-            NEOConversions.NEOToMPS(mDriveMotor.getEncoder().getVelocity(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio), 
-
+            Conversions.motorToMPS(mDriveMotor.getEncoder().getVelocity(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio), 
             getAngle()
         ); 
     }
@@ -152,7 +150,7 @@ public class SwerveModule {
      */
     public SwerveModulePosition getPosition(){
         return new SwerveModulePosition(
-            NEOConversions.NEOToMeters(mDriveMotor.getEncoder().getPosition(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio),
+            Conversions.motorToMeters(mDriveMotor.getEncoder().getPosition(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio),
             getAngle()
         );
     }
