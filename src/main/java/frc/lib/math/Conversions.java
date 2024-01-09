@@ -5,21 +5,21 @@ package frc.lib.math;
 public class Conversions {
 
     /**
-     * @param positionCounts CANCoder Position Counts
+     * @param positionCounts CANCoder Rotations
      * @param gearRatio      Gear Ratio between CANCoder and Mechanism
      * @return Degrees of Rotation of Mechanism
      */
     public static double CANcoderToDegrees(double positionCounts, double gearRatio) {
-        return positionCounts * (360.0 / (gearRatio * 4096.0));
+        return positionCounts * (360.0 / gearRatio);
     }
 
     /**
      * @param degrees   Degrees of rotation of Mechanism
      * @param gearRatio Gear Ratio between CANCoder and Mechanism
-     * @return CANCoder Position Counts
+     * @return CANCoder Rotations
      */
     public static double degreesToCANcoder(double degrees, double gearRatio) {
-        return degrees / (360.0 / (gearRatio * 4096.0));
+        return degrees / (360.0 / gearRatio);
     }
 
     /**
@@ -45,7 +45,7 @@ public class Conversions {
      * @param gearRatio      Gear Ratio between Falcon and Mechanism
      * @return RPM of Mechanism
      */
-    public static double falconToMechanismRPM(double FalconRPM, double gearRatio) {
+    public static double falconToWheelRPM(double FalconRPM, double gearRatio) {
         return FalconRPM / gearRatio;
     }
 
@@ -54,7 +54,7 @@ public class Conversions {
      * @param gearRatio Gear Ratio between Falcon and Mechanism
      * @return RPM of Falcon
      */
-    public static double MechanismRPMToFalcon(double RPM, double gearRatio) {
+    public static double wheelRPMToFalcon(double RPM, double gearRatio) {
         return RPM * gearRatio;
     }
 
@@ -65,7 +65,7 @@ public class Conversions {
      * @return Meters Per Second
      */
     public static double falconToMPS(double FalconRPM, double circumference, double gearRatio) {
-        double wheelRPM = falconToMechanismRPM(FalconRPM, gearRatio);
+        double wheelRPM = falconToWheelRPM(FalconRPM, gearRatio);
         double wheelMPS = (wheelRPM * circumference) / 60;
         return wheelMPS;
     }
@@ -78,7 +78,7 @@ public class Conversions {
      */
     public static double MPSToFalcon(double velocity, double circumference, double gearRatio) {
         double wheelRPM = ((velocity * 60) / circumference);
-        return MechanismRPMToFalcon(wheelRPM, gearRatio);
+        return wheelRPMToFalcon(wheelRPM, gearRatio);
     }
 
     /**
