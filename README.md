@@ -14,3 +14,6 @@ The repository for Artemis, Team 2976 The Spartabots' robot for the 2024 FIRST R
 <a href="https://github.com/s-aditya-k" target="_blank" title="s-aditya-k">
   <img src="https://github.com/s-aditya-k.png?size=40" height="40" width="40" alt="s-aditya-k" />
 </a>
+<a href="https://github.com/orgs/SkylineSpartabots/teams/programming" target="_blank" title="Programming">
+  <img src="https://github.com/orgs/SkylineSpartabots/teams/programming.png?size=40" height="40" width="40" alt="Programming" />
+</a>
