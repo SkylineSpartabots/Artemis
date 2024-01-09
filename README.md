@@ -1,3 +1,7 @@
+<a href="https://github.com/SpartaBots" target="_blank" title="Banner">
+  <img src="https://i.ytimg.com/vi/h8gYN27Z0zo/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBRNTh8RlnTIgo1uy_CKcVEihDmqg" height="500" width="1000" alt="Banner" />
+</a>
+
 # Artemis 2023-2024 Iteration
 The repository for Artemis, Team 2976 The Spartabots' robot for the 2024 FIRST Robotics Competition.
 
@@ -16,7 +20,4 @@ The repository for Artemis, Team 2976 The Spartabots' robot for the 2024 FIRST R
 </a>
 <a href="https://github.com/AarushSharma123" target="_blank" title="AarushSharma123">
   <img src="https://github.com/AarushSharma123.png?size=40" height="40" width="40" alt="AarushSharma123" />
-</a>
-<a href="https://github.com/orgs/SkylineSpartabots/teams/programming" target="_blank" title="Programming">
-  <img src="https://avatars.githubusercontent.com/t/2988436?s=116&v=4" height="40" width="40" alt="Programming" />
 </a>
