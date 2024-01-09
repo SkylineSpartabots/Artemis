@@ -4,9 +4,9 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -132,8 +132,8 @@ public final class Constants {
     public static final double maxAngularVelocity = 7.0; 
 
     /* Neutral Modes */
-    public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Brake;
-    public static final NeutralModeValue driveNeutralMode = NeutralModeValue.Brake;
+    public static final IdleMode angleNeutralMode = IdleMode.kBrake;
+    public static final IdleMode driveNeutralMode = IdleMode.kBrake;
 
  
     /* Module Specific Constants - TO BE DONE FOR ARTEMIS*/ 

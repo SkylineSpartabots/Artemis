@@ -8,7 +8,6 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.DutyCycle;
 import frc.lib.math.FalconConversions;
 import frc.lib.math.NEOConversions;
 import frc.lib.util.CTREModuleState;
@@ -20,7 +19,6 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkBase.ControlType;
-import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
@@ -116,7 +114,7 @@ public class SwerveModule {
     private void configAngleMotor(){
         mAngleMotor.setSmartCurrentLimit(Constants.SwerveConstants.anglePeakCurrentLimit);
         mAngleMotor.setInverted(Constants.SwerveConstants.angleMotorInvert);
-        mAngleMotor.setIdleMode(IdleMode.kBrake);
+        mAngleMotor.setIdleMode(Constants.SwerveConstants.angleNeutralMode);
 
         mAngleMotor.getPIDController().setP(Constants.SwerveConstants.angleKP);
         mAngleMotor.getPIDController().setI(Constants.SwerveConstants.angleKI);
@@ -128,7 +126,7 @@ public class SwerveModule {
     private void configDriveMotor(){   
         mDriveMotor.setSmartCurrentLimit(Constants.SwerveConstants.drivePeakCurrentLimit);
         mDriveMotor.setInverted(Constants.SwerveConstants.driveMotorInvert);
-        mDriveMotor.setIdleMode(IdleMode.kBrake);
+        mDriveMotor.setIdleMode(Constants.SwerveConstants.driveNeutralMode);
         
         mDriveMotor.setOpenLoopRampRate(Constants.SwerveConstants.openLoopRamp);
         mDriveMotor.setClosedLoopRampRate(Constants.SwerveConstants.closedLoopRamp);

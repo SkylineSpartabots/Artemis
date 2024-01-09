@@ -3,7 +3,7 @@ package frc.lib.math;
 public class NEOConversions {
     /**
      * @param revolutions    NEO Revolutions
-     * @param gearRatio Gear Ratio between NEO and Mechanism
+     * @param gearRatio      Gear Ratio between NEO and Mechanism
      * @return Degrees of Rotation of Mechanism
      */
     public static double NEOToDegrees(double revolutions, double gearRatio) {
