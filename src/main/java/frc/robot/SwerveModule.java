@@ -91,15 +91,19 @@ public class SwerveModule {
     }
 
     private Rotation2d getAngle(){
-        return Rotation2d.fromDegrees(Conversions.falconToDegrees(mAngleMotor.getPosition().getValueAsDouble(), Constants.SwerveConstants.angleGearRatio));
+        return Rotation2d.fromDegrees(Conversions.CANcoderToDegrees(angleEncoder.getPosition().getValueAsDouble(), Constants.SwerveConstants.angleEncoderGearRatio));    
     }
-
-    public Rotation2d getCanCoder(){
+    
+    /**
+     * Gets the Rotation2d of recorded by the CANcoder.
+     * @return Rotation2d recorded by the CANcoder.
+     */
+    public Rotation2d getCanCoderAngle(){
         return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition().getValueAsDouble());
     }
 
     private void resetToAbsolute(){
-        double absolutePosition = Conversions.degreesToFalcon(getCanCoder().getDegrees() - angleOffset.getDegrees(), Constants.SwerveConstants.angleGearRatio);
+        double absolutePosition = Conversions.degreesToFalcon(getCanCoderAngle().getDegrees() - angleOffset.getDegrees(), Constants.SwerveConstants.angleGearRatio);
         // check later no idea if this is right
         mAngleMotor.setPosition(absolutePosition);
     }
@@ -116,7 +120,6 @@ public class SwerveModule {
     private void configDriveMotor(){        
         mDriveMotor.getConfigurator().apply(CTREConfigs.swerveDriveFXConfig);
         mDriveMotor.setPosition(0);
-        //mDriveMotor.setSelectedSensorPosition(0);
     }
 
     public SwerveModuleState getState(){

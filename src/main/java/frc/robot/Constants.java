@@ -79,6 +79,9 @@ public final class Constants {
     /* Angle Encoder Invert */
     public static final SensorDirectionValue canCoderInvert = chosenModule.canCoderInvert;
 
+    /* Angle Encoder Gear Ratio */
+    public static final double angleEncoderGearRatio = 1;
+
     /* Swerve Current Limitting */ // DID NOT CHANGE
     public static final int angleContinuousCurrentLimit = 25;
     public static final int anglePeakCurrentLimit = 40;
