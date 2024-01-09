@@ -155,7 +155,7 @@ public class SwerveModule {
      */
     public SwerveModulePosition getPosition(){
         return new SwerveModulePosition(
-            FalconConversions.falconToMeters(mDriveMotor.getEncoder().getPosition(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio),
+            NEOConversions.NEOToMeters(mDriveMotor.getEncoder().getPosition(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio),
             getAngle()
         );
     }
