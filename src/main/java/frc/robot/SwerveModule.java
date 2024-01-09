@@ -115,6 +115,7 @@ public class SwerveModule {
 
     private void configDriveMotor(){        
         mDriveMotor.getConfigurator().apply(CTREConfigs.swerveDriveFXConfig);
+        mDriveMotor.setPosition(0);
         //mDriveMotor.setSelectedSensorPosition(0);
     }
 
