@@ -1,5 +1,8 @@
 # Artemis 2023-2024 Iteration
-The repository for Artemis, Team 2976 The Spartabots' robot for the 2024 FIRST Robotics Competition. 
+The repository for Artemis, Team 2976 The Spartabots' robot for the 2024 FIRST Robotics Competition.
+
+# Languages
+<p align="left"> <a href="https://www.oracle.com/java/technologies/jdtt-jsp.html" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original-wordmark.svg" alt="Java" width="40" height = "40"/>
 
 # Contributers
 <a href="https://github.com/VincentShao32" target="_blank" title="VincentShao32">
