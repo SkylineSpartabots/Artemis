@@ -25,7 +25,9 @@ public class TossCommand extends Command {
   }
 
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    s_shooter.setVoltage(0);
+  }
 
   @Override
   public boolean isFinished() {
