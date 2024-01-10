@@ -5,10 +5,19 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
+// import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import org.littletonrobotics.junction.LogFileUtil;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -16,25 +25,50 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
 
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
 
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
+  public static enum RobotMode {
+    SIM,
+    REPLAY,
+    REAL
+  }
+
+  // Control the mode of the robot
+  public static final RobotMode mode = Robot.isReal() ? RobotMode.REAL : RobotMode.SIM;
+
+  @SuppressWarnings(value = "resource")
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
-    //DriverStation.Alliance a = DriverStation.getAlliance().get();
-    //SmartDashboard.putString("Alliance", a == DriverStation.Alliance.Blue ? "Blue" : a == DriverStation.Alliance.Red ? "Red" : "Other");
-    
+    Logger.recordMetadata("Codebase", "6657 2024");
+    switch (mode) {
+      case REAL:
+        Logger.addDataReceiver(new WPILOGWriter("/U")); // Log to a USB stick
+        Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+        new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
+        break;
+      case REPLAY:
+        setUseTiming(false); // Run as fast as possible
+        String logPath =
+            LogFileUtil
+                .findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+        Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
+        Logger.addDataReceiver(
+            new WPILOGWriter(
+                LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+        break;
+      case SIM:
+        Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+        break;
+    }
+    Logger.start();
   }
 
-  /**
+ /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
    * that you want ran during disabled, autonomous, teleoperated and test.
    *

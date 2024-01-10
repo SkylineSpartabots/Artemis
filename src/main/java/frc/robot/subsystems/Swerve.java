@@ -7,9 +7,12 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -42,7 +45,7 @@ public class Swerve extends SubsystemBase {
     // StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
     //     .getStructArrayTopic("MyPoseArray", Pose2d.struct).publish(); for multiple poses
 
-    private SwerveDriveOdometry swerveOdometry;
+    private SwerveDrivePoseEstimator swerveOdometry;
     private Pigeon2 gyro;
     private SwerveModule[] mSwerveMods;
     public Supplier<Pose2d> poseSupplier = () -> getPose();
@@ -57,6 +60,8 @@ public class Swerve extends SubsystemBase {
     public double yTolerance = 1.0;
     public double rotTolerance = 30;
 
+    //TODO: kalman filters here
+
     // initializes the swerve modules
     public Swerve() {
         gyro = new Pigeon2(Constants.SwerveConstants.pigeonID, "2976 CANivore");
@@ -69,7 +74,9 @@ public class Swerve extends SubsystemBase {
                 new SwerveModule(3, Constants.SwerveConstants.Mod3.constants)
         };
 
-        swerveOdometry = new SwerveDriveOdometry(Constants.SwerveConstants.swerveKinematics, getYaw(), getModulePositions());
+        swerveOdometry = 
+        new SwerveDrivePoseEstimator(
+            Constants.SwerveConstants.swerveKinematics, getYaw(), getModulePositions(), new Pose2d());
     }
 
         // used to apply any driving movement to the swerve modules
@@ -102,8 +109,9 @@ public class Swerve extends SubsystemBase {
     }
 
     // returns pose of the robot
+    @AutoLogOutput(key = "Odometry/Robot")
     public Pose2d getPose() {
-        return swerveOdometry.getPoseMeters();
+        return swerveOdometry.getEstimatedPosition();
     }
 
     // resets odometry to the provided pose
@@ -178,14 +186,14 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
-      Pose2d currPose = swerveOdometry.getPoseMeters();
+      Pose2d currPose = getPose();
       publisher.set(currPose);
     }
 
     @Override
     public void simulationPeriodic() {
         // This method will be called once per scheduler run during simulation
-        Pose2d currPose = swerveOdometry.getPoseMeters();
+        Pose2d currPose = getPose();
         publisher.set(currPose);
     }
 }

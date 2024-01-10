@@ -4,6 +4,22 @@
       "/FMSInfo": "FMSInfo"
     }
   },
+  "NetworkTables": {
+    "transitory": {
+      "AdvantageKit": {
+        "open": true
+      },
+      "Pose2d##v_MyPose": {
+        "Rotation2d##v_rotation": {
+          "open": true
+        },
+        "Translation2d##v_translation": {
+          "open": true
+        },
+        "open": true
+      }
+    }
+  },
   "NetworkTables Info": {
     "AdvantageScope@1": {
       "Publishers": {
