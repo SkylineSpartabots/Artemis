@@ -11,6 +11,7 @@ import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -18,6 +19,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -30,6 +34,13 @@ public class Swerve extends SubsystemBase {
         }
         return instance;
     }
+
+    //for logging pose data during simulation
+    StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault()
+    .getStructTopic("MyPose", Pose2d.struct).publish();
+
+    // StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
+    //     .getStructArrayTopic("MyPoseArray", Pose2d.struct).publish(); for multiple poses
 
     private SwerveDriveOdometry swerveOdometry;
     private Pigeon2 gyro;
@@ -147,7 +158,7 @@ public class Swerve extends SubsystemBase {
     // checks if the swerve is being used for an auto generated path like OTF or auto
     public boolean pathInProgress() {
         return !getDefaultCommand().isScheduled();
-    }
+    }   
 
     // these two methods below are used in auto to set the parameters for the goal pose range and execute commands in
     // auto when the robot gets within that range of the goal pose
@@ -162,5 +173,19 @@ public class Swerve extends SubsystemBase {
                 && (Math.abs(getPose().getY() - goalPose.getY()) < yTolerance)
                 && (Math.abs(getPose().getRotation().getDegrees()
                         - goalPose.getRotation().getDegrees()) < rotTolerance);
+    }
+
+    @Override
+    public void periodic() {
+      // This method will be called once per scheduler run
+      Pose2d currPose = swerveOdometry.getPoseMeters();
+      publisher.set(currPose);
+    }
+
+    @Override
+    public void simulationPeriodic() {
+        // This method will be called once per scheduler run during simulation
+        Pose2d currPose = swerveOdometry.getPoseMeters();
+        publisher.set(currPose);
     }
 }
