@@ -12,12 +12,10 @@ import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
 import frc.lib.util.SwerveModuleConstants;
 
-import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -26,8 +24,6 @@ public class SwerveModule {
 
     // Control requests
     // Reuse these, don't make more
-    final DutyCycleOut dutyCycleRequest = new DutyCycleOut(0);
-    final VoltageOut voltageOutRequest = new VoltageOut(0);
     // ControlMode.Position without voltage compensation
     final PositionDutyCycle positionDutyCycleRequest = new PositionDutyCycle(0);
     // ControlMode.Position with voltage compensation
@@ -76,10 +72,10 @@ public class SwerveModule {
     private void setSpeed(SwerveModuleState desiredState, boolean isOpenLoop){
         if(isOpenLoop){
             double percentOutput = desiredState.speedMetersPerSecond / Constants.SwerveConstants.maxSpeed;
-            mDriveMotor.setControl(dutyCycleRequest.withOutput(percentOutput));
+            mDriveMotor.set(percentOutput);
         }
         else {
-            double velocity = Conversions.MPSToFalcon(desiredState.speedMetersPerSecond, Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio);
+            double velocity = Conversions.MPSToFalcon(desiredState.speedMetersPerSecond, Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio);     
             mDriveMotor.setControl(velocityDutyCycle.withVelocity(velocity));
         }
     }
