@@ -10,10 +10,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 /** An example command that uses an example subsystem. */
 public class TossCommand extends Command {
   private final ShooterSubsystem s_shooter;
+  private boolean finish;
 
   public TossCommand() {
     s_shooter = ShooterSubsystem.getInstance();
     addRequirements(s_shooter);
+    finish = false;
   }
 
   @Override
@@ -22,6 +24,7 @@ public class TossCommand extends Command {
   @Override
   public void execute() {
     s_shooter.setVoltage(10);
+    finish = true;
   }
 
   @Override
@@ -31,6 +34,6 @@ public class TossCommand extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return finish;
   }
 }
