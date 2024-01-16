@@ -36,12 +36,12 @@ public final class Constants {
 
   public static final class HardwarePorts {
     // motors (predicted) IDs not fixed
-    // shooter ports should be correct, climb IDs still predicted
-    public static final int shooterLeaderM = 21;
-    public static final int shooterFollowerM = 22;
-    public static final int climbLeaderMotor = 3;
-    public static final int climbFollowerMotor = 4;
-
+    // TODO actually set correct port IDs at some point
+    public static final int shooterLeaderM = 21; // should be correct
+    public static final int shooterFollowerM = 22; // should be correct
+    public static final int climbLeaderMotor = 3; // predicted
+    public static final int climbFollowerMotor = 4; //predicted
+    public static final int armMotor = -1; // !! invalid !! needs to be set
   }
 
   public static final double FIELD_WIDTH_METERS = 8.21055;
