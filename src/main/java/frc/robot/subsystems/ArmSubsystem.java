@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -15,15 +16,19 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     private TalonFX motor;
+    private CANcoder canCoder;
+    private ArmState state = ArmState.FLOOR;
 
     private ArmSubsystem() {
         motor = new TalonFX(Constants.HardwarePorts.armMotor);
+        canCoder = new CANcoder(Constants.HardwarePorts.armCanCoder);
     }
 
+    // TODO set to some real value, these is totally random
     public enum ArmState {
         FLOOR(0.0),
-        AMP(80.0), // TODO set to some real value, this is totally random
-        SPEAKER(120.0); // TODO set to some real value, this is totally random
+        AMP(80.0),
+        SPEAKER(120.0);
         final double position;
 
         ArmState(double position) {
@@ -32,6 +37,10 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void setState(ArmState state) {
-        motor.setPosition(state.position);
+        this.state = state;
+    }
+
+    public double getCANCoderPosition() {
+        return state.position;
     }
 }

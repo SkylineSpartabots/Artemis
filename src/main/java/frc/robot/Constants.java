@@ -42,6 +42,7 @@ public final class Constants {
     public static final int climbLeaderMotor = 3; // predicted
     public static final int climbFollowerMotor = 4; //predicted
     public static final int armMotor = -1; // !! invalid !! needs to be set
+    public static final int armCanCoder = -1; // !! invalid !! needs to be set
   }
 
   public static final double FIELD_WIDTH_METERS = 8.21055;
