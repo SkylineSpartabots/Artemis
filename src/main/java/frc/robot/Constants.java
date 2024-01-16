@@ -41,7 +41,7 @@ public final class Constants {
     public static final int shooterFollowerM = 22;
     public static final int climbLeaderMotor = 3;
     public static final int climbFollowerMotor = 4;
-
+    public static final int intakeMotor = -1; // !! this number is invalid on purpose !! TODO fix
   }
 
   public static final double FIELD_WIDTH_METERS = 8.21055;
