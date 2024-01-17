@@ -39,8 +39,8 @@ public final class Constants {
     // shooter ports should be correct, climb IDs still predicted
     public static final int shooterLeaderM = 21;
     public static final int shooterFollowerM = 22;
-    public static final int climbLeaderMotor = 3;
-    public static final int climbFollowerMotor = 4;
+    public static final int climbMotor = 3;
+    public static final int climbPivotMotor = 4;
 
   }
 
