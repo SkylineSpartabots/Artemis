@@ -14,6 +14,7 @@ import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
@@ -24,8 +25,10 @@ public class SwerveModule {
     private Rotation2d angleOffset;
     private Rotation2d lastAngle;
 
-    private CANSparkFlex mAngleMotor;
-    private CANSparkFlex mDriveMotor;
+    // private CANSparkFlex mAngleMotor;
+    // private CANSparkFlex mDriveMotor;
+    private CANSparkMax mAngleMotor;
+    private CANSparkMax mDriveMotor;
     private CANcoder angleEncoder;
 
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.SwerveConstants.driveKS, Constants.SwerveConstants.driveKV, Constants.SwerveConstants.driveKA);
@@ -35,15 +38,19 @@ public class SwerveModule {
         this.angleOffset = moduleConstants.angleOffset;
         
         /* Angle Encoder Config */
-        angleEncoder = new CANcoder(moduleConstants.cancoderID, "2976 CANivore");
+        angleEncoder = new CANcoder(moduleConstants.cancoderID);
         configAngleEncoder();
 
         /* Angle Motor Config */
-        mAngleMotor = new CANSparkFlex(moduleConstants.angleMotorID, MotorType.kBrushless);
+        // mAngleMotor = new CANSparkFlex(moduleConstants.angleMotorID, MotorType.kBrushless);
+        mAngleMotor = new CANSparkMax(moduleConstants.angleMotorID, MotorType.kBrushless);
+
         configAngleMotor();
 
         /* Drive Motor Config */
-        mDriveMotor = new CANSparkFlex(moduleConstants.driveMotorID, MotorType.kBrushless);
+        // mDriveMotor = new CANSparkFlex(moduleConstants.driveMotorID, MotorType.kBrushless); //change back later
+        mDriveMotor = new CANSparkMax(moduleConstants.driveMotorID, MotorType.kBrushless);
+
         configDriveMotor();
 
         lastAngle = getState().angle;
