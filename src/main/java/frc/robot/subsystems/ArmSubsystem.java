@@ -41,6 +41,14 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getCANCoderPosition() {
+        return canCoder.getPosition().getValueAsDouble();
+    }
+
+    public double getCANCoderSetpoint() {
         return state.position;
+    }
+
+    public void setVoltage(double voltage) {
+        motor.setVoltage(voltage);
     }
 }
