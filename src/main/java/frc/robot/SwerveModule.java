@@ -9,6 +9,8 @@ import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
 import frc.lib.util.SwerveModuleConstants;
 
+import javax.print.attribute.standard.PagesPerMinute;
+
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -20,6 +22,16 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
 public class SwerveModule {
+
+    class Power {
+        public double voltage;
+        public double current;
+        
+        public Power(double v, double c){
+            voltage = v;
+            current = c;
+        }
+    }
 
     public int moduleNumber;
     private Rotation2d angleOffset;
@@ -150,6 +162,14 @@ public class SwerveModule {
             Conversions.motorToMPS(mDriveMotor.getEncoder().getVelocity(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio), 
             getAngle()
         ); 
+    }
+
+    /**
+     * Gets the current and voltage going to the angle motor of the module.
+     * @return A Power object containing the current current and voltage going to the angle motor.
+     */
+    public Power getAnglePower(){
+        return new Power(mAngleMotor.getBusVoltage(), mAngleMotor.getOutputCurrent());
     }
 
     /**

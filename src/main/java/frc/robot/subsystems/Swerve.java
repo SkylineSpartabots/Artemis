@@ -25,6 +25,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.units.Power;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -129,6 +130,16 @@ public class Swerve extends SubsystemBase {
         }
         return states;
     }
+
+    // gets the voltage and current of the swerve modules
+    @AutoLogOutput(key = "SwerveStates/Measured")
+    public Object[] getModulePowers(){
+        Object[] powers = new Object[4];
+        for(SwerveModule mod : mSwerveMods){
+            powers[mod.moduleNumber] = mod.getAnglePower();
+        }
+        return powers;
+    } 
     
     public void zeroGyro() {
         gyro.setYaw(0);

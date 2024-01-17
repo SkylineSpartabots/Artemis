@@ -7,6 +7,12 @@
   "NetworkTables": {
     "transitory": {
       "AdvantageKit": {
+        "RealOutputs": {
+          "SwerveStates": {
+            "open": true
+          },
+          "open": true
+        },
         "open": true
       },
       "Pose2d##v_MyPose": {
