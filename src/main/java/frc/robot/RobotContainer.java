@@ -29,15 +29,17 @@ public class RobotContainer {
   private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
   private final Swerve s_Swerve = Swerve.getInstance();
 
-  // private final XboxController driver = new XboxController(0);
-  // private final XboxController operator = new XboxController(1);
-  
-  // /* Driver Joysticks (drive control) */
-  // private final int translationAxis = XboxController.Axis.kLeftY.value;
-  // private final int strafeAxis = XboxController.Axis.kLeftX.value;
-  // private final int rotationAxis = XboxController.Axis.kRightX.value;
+  private CommandXboxController driver = new CommandXboxController(0);
 
-  // /* Driver Buttons */
+  //private final XboxController driver = new XboxController(0);
+  private final XboxController operator = new XboxController(1);
+  
+  /* Driver Joysticks (drive control) */
+  private final int translationAxis = XboxController.Axis.kLeftY.value;
+  private final int strafeAxis = XboxController.Axis.kLeftX.value;
+  private final int rotationAxis = XboxController.Axis.kRightX.value;
+
+  /* Driver Buttons */
   // private final JoystickButton driverBack = new JoystickButton(driver, XboxController.Button.kBack.value);
   // private final JoystickButton driverStart = new JoystickButton(driver, XboxController.Button.kStart.value);
   // private final JoystickButton driverA = new JoystickButton(driver, XboxController.Button.kA.value);
@@ -59,42 +61,42 @@ public class RobotContainer {
   //     return driver.getRightTriggerAxis() > Constants.triggerDeadzone;
   // });
 
-  // /* Operator Buttons */
-  // private final JoystickButton operatorBack = new JoystickButton(operator, XboxController.Button.kBack.value);
-  // private final JoystickButton operatorStart = new JoystickButton(operator, XboxController.Button.kStart.value);
-  // private final JoystickButton operatorA = new JoystickButton(operator, XboxController.Button.kA.value);
-  // private final JoystickButton operatorB = new JoystickButton(operator, XboxController.Button.kB.value);
-  // private final JoystickButton operatorX = new JoystickButton(operator, XboxController.Button.kX.value);
-  // private final JoystickButton operatorY = new JoystickButton(operator, XboxController.Button.kY.value);
-  // private final JoystickButton operatorRightBumper = new JoystickButton(operator,
-  //         XboxController.Button.kRightBumper.value);
-  // private final JoystickButton operatorLeftBumper = new JoystickButton(operator,
-  //         XboxController.Button.kLeftBumper.value);
+  /* Operator Buttons */
+  private final JoystickButton operatorBack = new JoystickButton(operator, XboxController.Button.kBack.value);
+  private final JoystickButton operatorStart = new JoystickButton(operator, XboxController.Button.kStart.value);
+  private final JoystickButton operatorA = new JoystickButton(operator, XboxController.Button.kA.value);
+  private final JoystickButton operatorB = new JoystickButton(operator, XboxController.Button.kB.value);
+  private final JoystickButton operatorX = new JoystickButton(operator, XboxController.Button.kX.value);
+  private final JoystickButton operatorY = new JoystickButton(operator, XboxController.Button.kY.value);
+  private final JoystickButton operatorRightBumper = new JoystickButton(operator,
+          XboxController.Button.kRightBumper.value);
+  private final JoystickButton operatorLeftBumper = new JoystickButton(operator,
+          XboxController.Button.kLeftBumper.value);
 
-  // private final Trigger operatorDpadUp = new Trigger(() -> operator.getPOV() == 0);
-  // private final Trigger operatorDpadRight = new Trigger(() -> operator.getPOV() == 90);
-  // private final Trigger operatorDpadDown = new Trigger(() -> operator.getPOV() == 180);
-  // private final Trigger operatorDpadLeft = new Trigger(() -> operator.getPOV() == 270);
-  // private final Trigger operatorLeftTrigger = new Trigger(() -> {
-  //     return operator.getLeftTriggerAxis() > Constants.triggerDeadzone;
-  // });
-  // private final Trigger operatorRightTrigger = new Trigger(() -> {
-  //     return operator.getRightTriggerAxis() > Constants.triggerDeadzone;
-  // });
+  private final Trigger operatorDpadUp = new Trigger(() -> operator.getPOV() == 0);
+  private final Trigger operatorDpadRight = new Trigger(() -> operator.getPOV() == 90);
+  private final Trigger operatorDpadDown = new Trigger(() -> operator.getPOV() == 180);
+  private final Trigger operatorDpadLeft = new Trigger(() -> operator.getPOV() == 270);
+  private final Trigger operatorLeftTrigger = new Trigger(() -> {
+      return operator.getLeftTriggerAxis() > Constants.triggerDeadzone;
+  });
+  private final Trigger operatorRightTrigger = new Trigger(() -> {
+      return operator.getRightTriggerAxis() > Constants.triggerDeadzone;
+  });
 
-  // /* Operator Joysticks */
-  // private final int operatorLeftStick = XboxController.Axis.kLeftY.value;
-  // private final int operatorRightStick = XboxController.Axis.kRightY.value;
+  /* Operator Joysticks */
+  private final int operatorLeftStick = XboxController.Axis.kLeftY.value;
+  private final int operatorRightStick = XboxController.Axis.kRightY.value;
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     s_Swerve.resetOdometry(new Pose2d());
     s_Swerve.zeroGyro();
 
-    // s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, 
-    // () -> -driver.getRawAxis(translationAxis),
-    // () -> -driver.getRawAxis(strafeAxis),
-    // () -> -driver.getRawAxis(rotationAxis)));
+    s_Swerve.setDefaultCommand(new TeleopSwerve(s_Swerve, 
+    () -> -driver.getRawAxis(translationAxis),
+    () -> -driver.getRawAxis(strafeAxis),
+    () -> -driver.getRawAxis(rotationAxis)));
 
     // Configure the trigger bindings
     configureBindings();

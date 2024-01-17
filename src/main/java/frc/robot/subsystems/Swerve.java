@@ -121,6 +121,7 @@ public class Swerve extends SubsystemBase {
     }
 
     // gets the state of the swerve modules
+    @AutoLogOutput(key = "SwerveStates/Measured")
     public SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
         for (SwerveModule mod : mSwerveMods) {
@@ -186,6 +187,8 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic() {
       // This method will be called once per scheduler run
+
+      swerveOdometry.update(getYaw(), getModulePositions());
       Pose2d currPose = getPose();
       publisher.set(currPose);
     }
@@ -195,5 +198,6 @@ public class Swerve extends SubsystemBase {
         // This method will be called once per scheduler run during simulation
         Pose2d currPose = getPose();
         publisher.set(currPose);
+        swerveOdometry.update(getYaw(), getModulePositions());
     }
 }
