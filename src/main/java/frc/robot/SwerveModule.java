@@ -89,11 +89,12 @@ public class SwerveModule {
     }
 
     private Rotation2d getAngle(){
-        return Rotation2d.fromDegrees(Conversions.CANcoderToDegrees(angleEncoder.getPosition().getValueAsDouble(), Constants.SwerveConstants.angleEncoderGearRatio));
+        return Rotation2d.fromDegrees(Conversions.motorToDegrees(mAngleMotor.getEncoder().getPosition(), Constants.SwerveConstants.angleGearRatio));
+        //return Rotation2d.fromDegrees(Conversions.CANcoderToDegrees(angleEncoder.getPosition().getValueAsDouble(), Constants.SwerveConstants.angleEncoderGearRatio));
     }
 
     public Rotation2d getCanCoder(){
-        return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition().getValueAsDouble());
+        return Rotation2d.fromDegrees(Conversions.CANcoderToDegrees(angleEncoder.getAbsolutePosition().getValueAsDouble(), Constants.SwerveConstants.angleEncoderGearRatio));
     }
 
     private void resetToAbsolute(){
