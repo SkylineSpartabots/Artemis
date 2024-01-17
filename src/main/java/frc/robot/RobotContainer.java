@@ -30,7 +30,7 @@ public class RobotContainer {
   private final Swerve s_Swerve = Swerve.getInstance();
 
   private final XboxController driver = new XboxController(0);
-  // private final XboxController operator = new XboxController(1);
+  private final XboxController operator = new XboxController(1);
   
   /* Driver Joysticks (drive control) */
   private final int translationAxis = XboxController.Axis.kLeftY.value;

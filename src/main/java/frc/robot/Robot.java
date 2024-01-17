@@ -44,7 +44,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
-    Logger.recordMetadata("Codebase", "6657 2024");
+    Logger.recordMetadata("Codebase", "2976 2024");
     switch (mode) {
       case REAL:
         Logger.addDataReceiver(new WPILOGWriter("/U")); // Log to a USB stick

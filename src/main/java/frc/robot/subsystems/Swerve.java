@@ -188,9 +188,9 @@ public class Swerve extends SubsystemBase {
     public void periodic() {
       // This method will be called once per scheduler run
 
-      swerveOdometry.update(getYaw(), getModulePositions());
-      Pose2d currPose = getPose();
-      publisher.set(currPose);
+    //   swerveOdometry.update(getYaw(), getModulePositions());
+    //   Pose2d currPose = getPose();
+    //   publisher.set(currPose);
     }
 
     @Override
