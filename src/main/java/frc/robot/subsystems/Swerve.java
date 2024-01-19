@@ -67,7 +67,7 @@ public class Swerve extends SubsystemBase {
 
     // initializes the swerve modules
     public Swerve() {
-        gyro = new Pigeon2(Constants.SwerveConstants.pigeonID, "2976 CANivore");
+        gyro = new Pigeon2(Constants.SwerveConstants.pigeonID);
         gyro.getConfigurator().apply(new Pigeon2Configuration());
 
         mSwerveMods = new SwerveModule[] {
@@ -207,6 +207,7 @@ public class Swerve extends SubsystemBase {
         }
         SmartDashboard.putBoolean("True", false);
         SmartDashboard.putNumber("Can Coder", mSwerveMods[0].angleEncoder.getAbsolutePosition().getValueAsDouble());
+        SmartDashboard.putNumber("Pigeon", getYaw().getDegrees());
         SmartDashboard.updateValues();
 
     //   swerveOdometry.update(getYaw(), getModulePositions());

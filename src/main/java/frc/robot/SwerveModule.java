@@ -103,7 +103,7 @@ public class SwerveModule {
 
     private Rotation2d getAngle(){
         return Rotation2d.fromDegrees(Conversions.motorToDegrees(mAngleMotor.getEncoder().getPosition(), Constants.SwerveConstants.angleGearRatio));
-        //return Rotation2d.fromDegrees(Conversions.CANcoderToDegrees(angleEncoder.getPosition().getValueAsDouble(), Constants.SwerveConstants.angleEncoderGearRatio));
+        // return Rotation2d.fromDegrees(Conversions.CANcoderToDegrees(angleEncoder.getPosition().getValueAsDouble(), Constants.SwerveConstants.angleEncoderGearRatio));
     }
 
     public Rotation2d getCanCoder(){
@@ -111,7 +111,7 @@ public class SwerveModule {
     }
 
     private void resetToAbsolute(){
-        double absolutePosition = Conversions.degreesToMotor(getCanCoder().getDegrees() - angleOffset.getDegrees(), Constants.SwerveConstants.angleGearRatio);
+        double absolutePosition = Conversions.degreesToMotor(angleOffset.getDegrees() - getCanCoder().getDegrees(), Constants.SwerveConstants.angleGearRatio);
         mAngleMotor.getEncoder().setPosition(absolutePosition);
     }
 
