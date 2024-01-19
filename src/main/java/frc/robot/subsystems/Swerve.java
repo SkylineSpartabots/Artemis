@@ -27,6 +27,7 @@ import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.units.Power;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -201,7 +202,13 @@ public class Swerve extends SubsystemBase {
       // This method will be called once per scheduler run
         for(SwerveModule mod : mSwerveMods) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
+
+
         }
+        SmartDashboard.putBoolean("True", false);
+        SmartDashboard.putNumber("Can Coder", mSwerveMods[0].angleEncoder.getAbsolutePosition().getValueAsDouble());
+        SmartDashboard.updateValues();
+
     //   swerveOdometry.update(getYaw(), getModulePositions());
     //   Pose2d currPose = getPose();
     //   publisher.set(currPose);
