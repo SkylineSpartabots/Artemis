@@ -5,6 +5,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
 import frc.lib.util.SwerveModuleConstants;
@@ -41,7 +42,7 @@ public class SwerveModule {
     // private CANSparkFlex mDriveMotor;
     private CANSparkMax mAngleMotor;
     private CANSparkMax mDriveMotor;
-    private CANcoder angleEncoder;
+    public CANcoder angleEncoder;
 
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.SwerveConstants.driveKS, Constants.SwerveConstants.driveKV, Constants.SwerveConstants.driveKA);
 
@@ -182,4 +183,5 @@ public class SwerveModule {
             getAngle()
         );
     }
+
 }
