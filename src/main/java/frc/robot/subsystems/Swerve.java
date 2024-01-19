@@ -210,7 +210,7 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("Pigeon", getYaw().getDegrees());
         SmartDashboard.updateValues();
 
-    //   swerveOdometry.update(getYaw(), getModulePositions());
+     swerveOdometry.update(getYaw(), getModulePositions());
     //   Pose2d currPose = getPose();
     //   publisher.set(currPose);
     }
