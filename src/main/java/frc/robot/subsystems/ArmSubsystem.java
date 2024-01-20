@@ -4,6 +4,9 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class ArmSubsystem extends SubsystemBase {
     private static ArmSubsystem instance;
@@ -15,12 +18,16 @@ public class ArmSubsystem extends SubsystemBase {
         return instance;
     }
 
-    private TalonFX motor;
+    private CANSparkMax leaderMotor;
+    private CANSparkMax followerMotor;
     private CANcoder canCoder;
     private ArmState state = ArmState.FLOOR;
 
     private ArmSubsystem() {
-        motor = new TalonFX(Constants.HardwarePorts.armMotor);
+        leaderMotor = new CANSparkMax(Constants.HardwarePorts.armLeaderMotor, MotorType.kBrushless);
+        leaderMotor.setIdleMode(IdleMode.kBrake);
+        followerMotor = new CANSparkMax(Constants.HardwarePorts.armFollowerMotor, MotorType.kBrushless);
+        followerMotor.follow(leaderMotor);
         canCoder = new CANcoder(Constants.HardwarePorts.armCanCoder);
     }
 
@@ -49,6 +56,6 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void setVoltage(double voltage) {
-        motor.setVoltage(voltage);
+        leaderMotor.setVoltage(voltage);
     }
 }
