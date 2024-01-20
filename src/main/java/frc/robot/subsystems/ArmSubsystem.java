@@ -28,6 +28,7 @@ public class ArmSubsystem extends SubsystemBase {
         leaderMotor.setIdleMode(IdleMode.kBrake);
         followerMotor = new CANSparkMax(Constants.HardwarePorts.armFollowerMotor, MotorType.kBrushless);
         followerMotor.follow(leaderMotor);
+        followerMotor.setIdleMode(IdleMode.kBrake);
         canCoder = new CANcoder(Constants.HardwarePorts.armCanCoder);
     }
 
