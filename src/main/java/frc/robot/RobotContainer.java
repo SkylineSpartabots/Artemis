@@ -6,9 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.TeleopSwerve;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Swerve;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
@@ -26,7 +24,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
   private final Swerve s_Swerve = Swerve.getInstance();
 
   private final XboxController driver = new XboxController(0);
@@ -123,6 +120,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(exampleSubsystem);
+    return null;
   }
 }
