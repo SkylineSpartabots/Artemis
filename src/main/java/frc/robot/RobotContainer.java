@@ -111,7 +111,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // driver controls
-    //driverBack.onTrue(new InstantCommand(() -> s_Swerve.resetOdometry(new Pose2d())));
+    driverBack.onTrue(new InstantCommand(() -> s_Swerve.resetOdometry(new Pose2d())));
 
 
   }

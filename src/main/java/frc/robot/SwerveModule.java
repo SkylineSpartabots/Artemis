@@ -24,7 +24,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class SwerveModule {
 
-    class Power {
+    public class Power {
         public double voltage;
         public double current;
         
@@ -169,6 +169,11 @@ public class SwerveModule {
      * Gets the current and voltage going to the angle motor of the module.
      * @return A Power object containing the current current and voltage going to the angle motor.
      */
+
+     public Power getDrivePower() {
+        return new Power(mDriveMotor.getBusVoltage(), mAngleMotor.getOutputCurrent());
+     }
+
     public Power getAnglePower(){
         return new Power(mAngleMotor.getBusVoltage(), mAngleMotor.getOutputCurrent());
     }

@@ -202,7 +202,7 @@ public class Swerve extends SubsystemBase {
       // This method will be called once per scheduler run
         for(SwerveModule mod : mSwerveMods) {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
-
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Voltage", mod.getDrivePower().voltage);
 
         }
         SmartDashboard.putBoolean("True", false);
