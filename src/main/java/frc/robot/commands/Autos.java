@@ -65,20 +65,21 @@ public final class Autos {
       throw new UnsupportedOperationException("This is a utility class!");
   }
 
-  ChoreoTrajectory traj = Choreo.getTrajectory("Trajectory"); // 
+  ChoreoTrajectory traj = Choreo.getTrajectory("r1_1BallAmp");
+
 
   Choreo.choreoSwerveCommand(
-    traj, // 
-    this::getPose // 
-    new PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0), // 
-    new PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0), // 
-    new PIDController(Constants.AutoConstants.kPThetaController, 0.0, 0.0), // 
-    (ChassisSpeeds speeds) -> // 
+    traj,
+    this::getPose
+    new PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0),
+    new PIDController(Constants.AutoConstants.kPYController, 0.0, 0.0), 
+    new PIDController(Constants.AutoConstants.kPThetaController, 0.0, 0.0), 
+    (ChassisSpeeds speeds) ->
         this.drive(new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond), ...),
     () -> {
         Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
             mirror = alliance.isPresent() && alliance.get() == Alliance.Red;
-    }, // 
-    this, // 
+    },
+    this, 
 );
 }
