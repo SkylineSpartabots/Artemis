@@ -7,16 +7,20 @@ import java.util.Optional;
 
 import com.choreo.lib.*;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.Swerve;
 
 public final class Autos {  
       
   private static Command lastCommand;
   private static Command selectedAuto;
+  ChoreoTrajectory traj;
+  private static Swerve s_Swerve = Swerve.getInstance();
 
 
   // Return auto selected in Shuffleboard
@@ -65,20 +69,20 @@ public final class Autos {
       throw new UnsupportedOperationException("This is a utility class!");
   }
 
+  public Command oneBallAmp() {
   ChoreoTrajectory oneBallAmp = Choreo.getTrajectory("r1_1BallAmp");
+    PIDController thetaController = new PIDController(0, 0, 0);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-  Choreo.choreoSwerveCommand(
-    oneBallAmp,
-    this::getPose
-    new PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0),
-    new PIDController(Constants.AutoConstants.kPYController, 0.0, 0.0), 
-    new PIDController(Constants.AutoConstants.kPThetaController, 0.0, 0.0), 
-    (ChassisSpeeds speeds) ->
-        this.drive(new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond), ...),
-    () -> {
-        Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
-            mirror = alliance.isPresent() && alliance.get() == Alliance.Red;
-    },
-    this, 
-  );
+    s_Swerve.resetOdometry(oneBallAmp.getInitialPose());
+    Command swerveCommand = Choreo.choreoSwerveCommand(
+      oneBallAmp, 
+      s_Swerve::getPose, 
+      new PIDController(0, 0, 0), //TODO write actual PID values
+      new PIDController(0, 0, 0),
+      thetaController,
+      (ChassisSpeeds speeds) -> s_Swerve.autoDrive(speeds, false), //this has to be robot-relative, need to check that auto-drive function works for this (may have to use drive function and set field-relative to false idk)
+      true, //decides whether or not the math should be mirrored (depends on alliance)
+      s_Swerve);
+  }
 }
