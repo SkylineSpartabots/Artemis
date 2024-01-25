@@ -67,19 +67,18 @@ public final class Autos {
 
   ChoreoTrajectory oneBallAmp = Choreo.getTrajectory("r1_1BallAmp");
 
-
-  // Choreo.choreoSwerveCommand(
-  //   oneBallAmp,
-  //   this::getPose
-  //   new PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0),
-  //   new PIDController(Constants.AutoConstants.kPYController, 0.0, 0.0), 
-  //   new PIDController(Constants.AutoConstants.kPThetaController, 0.0, 0.0), 
-  //   (ChassisSpeeds speeds) ->
-  //       this.drive(new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond), ...),
-  //   () -> {
-  //       Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
-  //           mirror = alliance.isPresent() && alliance.get() == Alliance.Red;
-  //   },
-  //   this, 
-  // );
+  Choreo.choreoSwerveCommand(
+    oneBallAmp,
+    this::getPose
+    new PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0),
+    new PIDController(Constants.AutoConstants.kPYController, 0.0, 0.0), 
+    new PIDController(Constants.AutoConstants.kPThetaController, 0.0, 0.0), 
+    (ChassisSpeeds speeds) ->
+        this.drive(new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond), ...),
+    () -> {
+        Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
+            mirror = alliance.isPresent() && alliance.get() == Alliance.Red;
+    },
+    this, 
+  );
 }
