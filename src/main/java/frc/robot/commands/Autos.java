@@ -3,8 +3,13 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+import java.util.Optional;
 
+import com.choreo.lib.*;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -59,4 +64,21 @@ public final class Autos {
   private Autos() {
       throw new UnsupportedOperationException("This is a utility class!");
   }
+
+  ChoreoTrajectory traj = Choreo.getTrajectory("Trajectory"); // 
+
+  Choreo.choreoSwerveCommand(
+    traj, // 
+    this::getPose // 
+    new PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0), // 
+    new PIDController(Constants.AutoConstants.kPXController, 0.0, 0.0), // 
+    new PIDController(Constants.AutoConstants.kPThetaController, 0.0, 0.0), // 
+    (ChassisSpeeds speeds) -> // 
+        this.drive(new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond), ...),
+    () -> {
+        Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
+            mirror = alliance.isPresent() && alliance.get() == Alliance.Red;
+    }, // 
+    this, // 
+);
 }
