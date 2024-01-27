@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -20,14 +20,14 @@ public class ShooterSubsystem extends SubsystemBase {
     return instance;
   }
 
-  private CANSparkMax m_shooterLeader;
-  private CANSparkMax m_shooterFollower;
+  private CANSparkFlex m_shooterLeader;
+  private CANSparkFlex m_shooterFollower;
 
   private double voltage;
   
   public ShooterSubsystem() {
-    m_shooterLeader = new CANSparkMax(Constants.HardwarePorts.shooterLeaderM, MotorType.kBrushless);
-    m_shooterFollower = new CANSparkMax(Constants.HardwarePorts.shooterFollowerM, MotorType.kBrushless);
+    m_shooterLeader = new CANSparkFlex(Constants.HardwarePorts.shooterLeaderM, MotorType.kBrushless);
+    m_shooterFollower = new CANSparkFlex(Constants.HardwarePorts.shooterFollowerM, MotorType.kBrushless);
     m_shooterFollower.setInverted(true);
     m_shooterFollower.follow(m_shooterLeader);
   }
