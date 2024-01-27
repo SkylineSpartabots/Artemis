@@ -46,7 +46,7 @@ public class Robot extends LoggedRobot {
   @SuppressWarnings(value = "resource")
   @Override
   public void robotInit() {
-    m_chooser.addOption("Test", Autos.AutoType.Test);
+    m_chooser.addOption("Test", Autos.AutoType.test);
     m_chooser.addOption("One Ball Amp", Autos.AutoType.oneBallAmp);
     m_chooser.addOption("Ball Speaker", Autos.AutoType.ballSpeaker);
     SmartDashboard.putData("Auto Paths", m_chooser);
