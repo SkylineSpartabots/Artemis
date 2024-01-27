@@ -10,12 +10,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 /** An example command that uses an example subsystem. */
 public class TossCommand extends Command {
   private final ShooterSubsystem s_shooter;
-  private boolean finish;
+  private boolean finish = false;
+  private static boolean running = false;
 
   public TossCommand() {
     s_shooter = ShooterSubsystem.getInstance();
     addRequirements(s_shooter);
-    finish = false;
   }
 
   @Override
@@ -23,13 +23,16 @@ public class TossCommand extends Command {
 
   @Override
   public void execute() {
-    s_shooter.setVoltage(10);
-    finish = true;
+    if (running) {
+      s_shooter.setVoltage(0);
+    } else {
+      s_shooter.setVoltage(10);
+    }
   }
 
   @Override
   public void end(boolean interrupted) {
-    s_shooter.setVoltage(0);
+    running = !running;
   }
 
   @Override

@@ -46,7 +46,7 @@ public class RobotContainer {
   private void configureBindings() {
     
     // driver controls
-    driver.a().whileTrue(new TossCommand());
+    driver.a().onTrue(new TossCommand());
 
     // operator controls
 

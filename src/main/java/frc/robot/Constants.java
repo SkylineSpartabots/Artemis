@@ -37,7 +37,7 @@ public final class Constants {
   public static final class HardwarePorts {
     // motors (predicted) IDs not fixed
     // shooter ports should be correct, climb IDs still predicted
-    public static final int shooterLeaderM = 21;
+    public static final int shooterLeaderM = 23;
     public static final int shooterFollowerM = 22;
     public static final int climbLeaderMotor = 3;
     public static final int climbFollowerMotor = 4;
