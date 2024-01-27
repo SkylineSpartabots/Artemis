@@ -5,7 +5,7 @@
 package frc.robot;
 
 import frc.robot.commands.TossCommand;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.PivotSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -27,13 +27,13 @@ public class RobotContainer {
 
   /* Subsystems */
   private final ShooterSubsystem shooterSubsystem;
-  private final ArmSubsystem armSubsystem;
+  private final PivotSubsystem pivotSubsystem;
 
   public RobotContainer() {
     
     // Initialize subsystems
     shooterSubsystem = ShooterSubsystem.getInstance();
-    armSubsystem = ArmSubsystem.getInstance();
+    pivotSubsystem = PivotSubsystem.getInstance();
     
     
     // Configure the button bindings

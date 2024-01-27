@@ -6,39 +6,39 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.math.controller.PIDController;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ArmSubsystem.ArmState;
+import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.PivotSubsystem.PivotState;
 
-public class SetArm extends Command {
-  private final ArmSubsystem s_arm;
-  private ArmSubsystem.ArmState state;
-  private double armVoltage;
-  private PIDController armController = new PIDController(0, 0, 0); //TODO set to real values
+public class SetPivot extends Command {
+  private final PivotSubsystem pivotSubsystem;
+  private PivotSubsystem.PivotState state;
+  private double pivotVoltage;
+  private PIDController pivotController = new PIDController(0, 0, 0); //TODO set to real values
 
-  public SetArm(ArmState state) {
-      s_arm = ArmSubsystem.getInstance();
-      addRequirements(s_arm);
+  public SetPivot(PivotState state) {
+      pivotSubsystem = PivotSubsystem.getInstance();
+      addRequirements(pivotSubsystem);
       this.state = state;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    s_arm.setState(state);
-    armController.reset();
+    pivotSubsystem.setState(state);
+    pivotController.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    armVoltage = armController.calculate(s_arm.getCANCoderPosition(), s_arm.getCANCoderSetpoint());
-    s_arm.setVoltage(armVoltage);
+    pivotVoltage = pivotController.calculate(pivotSubsystem.getCANCoderPosition(), pivotSubsystem.getCANCoderSetpoint());
+    pivotSubsystem.setVoltage(pivotVoltage);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    s_arm.setVoltage(0);
+    pivotSubsystem.setVoltage(0);
   }
 
   // Returns true when the command should end.

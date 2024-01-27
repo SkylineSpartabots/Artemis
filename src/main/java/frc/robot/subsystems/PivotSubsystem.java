@@ -9,12 +9,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-public class ArmSubsystem extends SubsystemBase {
-    private static ArmSubsystem instance;
+public class PivotSubsystem extends SubsystemBase {
+    private static PivotSubsystem instance;
 
-    public static ArmSubsystem getInstance() {
+    public static PivotSubsystem getInstance() {
         if (instance == null) {
-            instance = new ArmSubsystem();
+            instance = new PivotSubsystem();
         }
         return instance;
     }
@@ -22,30 +22,30 @@ public class ArmSubsystem extends SubsystemBase {
     private CANSparkFlex leaderMotor;
     private CANSparkFlex followerMotor;
     private CANcoder canCoder;
-    private ArmState state = ArmState.FLOOR;
+    private PivotState state = PivotState.FLOOR;
 
-    private ArmSubsystem() {
-        leaderMotor = new CANSparkFlex(Constants.HardwarePorts.armLeaderMotor, MotorType.kBrushless);
+    private PivotSubsystem() {
+        leaderMotor = new CANSparkFlex(Constants.HardwarePorts.pivotLeaderMotor, MotorType.kBrushless);
         leaderMotor.setIdleMode(IdleMode.kBrake);
-        followerMotor = new CANSparkFlex(Constants.HardwarePorts.armFollowerMotor, MotorType.kBrushless);
+        followerMotor = new CANSparkFlex(Constants.HardwarePorts.pivotFollowerMotor, MotorType.kBrushless);
         followerMotor.follow(leaderMotor);
         followerMotor.setIdleMode(IdleMode.kBrake);
-        canCoder = new CANcoder(Constants.HardwarePorts.armCanCoder);
+        canCoder = new CANcoder(Constants.HardwarePorts.pivotCanCoder);
     }
 
     // TODO set to some real value, these is totally random
-    public enum ArmState {
+    public enum PivotState {
         FLOOR(0.0),
         AMP(80.0),
         SPEAKER(120.0);
         final double position;
 
-        ArmState(double position) {
+        PivotState(double position) {
             this.position = position;
         }
     }
 
-    public void setState(ArmState state) {
+    public void setState(PivotState state) {
         this.state = state;
     }
 
