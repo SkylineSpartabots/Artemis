@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 
+import com.ctre.phoenix6.SignalLogger;
 import frc.robot.SwerveModule;
 
 import java.util.function.BooleanSupplier;
@@ -101,7 +102,7 @@ public class Swerve extends SubsystemBase {
         routine = 
         new SysIdRoutine(
             // empty config defaults to 1 volt/second ramp rate and 7 volt step voltage
-            new SysIdRoutine.Config(), 
+            new SysIdRoutine.Config(null, null, null, (state) -> SignalLogger.writeString("State", state.toString())),
             new SysIdRoutine.Mechanism(
                 (Measure<Voltage> volts) -> {
                     for (SwerveModule mod : mSwerveMods) {

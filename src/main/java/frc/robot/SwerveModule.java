@@ -1,24 +1,19 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
 import frc.lib.util.SwerveModuleConstants;
-
-import javax.print.attribute.standard.PagesPerMinute;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
-import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -47,8 +42,6 @@ public class SwerveModule {
     public CANcoder angleEncoder;
 
     private PWMSparkMax test;
-
-    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.SwerveConstants.driveKS, Constants.SwerveConstants.driveKV, Constants.SwerveConstants.driveKA);
 
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
         this.moduleNumber = moduleNumber;
@@ -137,24 +130,30 @@ public class SwerveModule {
         mAngleMotor.setInverted(Constants.SwerveConstants.angleMotorInvert);
         mAngleMotor.setIdleMode(Constants.SwerveConstants.angleNeutralMode);
 
-        mAngleMotor.getPIDController().setP(Constants.SwerveConstants.angleKP);
-        mAngleMotor.getPIDController().setI(Constants.SwerveConstants.angleKI);
-        mAngleMotor.getPIDController().setD(Constants.SwerveConstants.angleKD);
+        SparkPIDController pid = mAngleMotor.getPIDController();
+        pid.setP(Constants.SwerveConstants.angleKP);
+        pid.setI(Constants.SwerveConstants.angleKI);
+        pid.setD(Constants.SwerveConstants.angleKD);
+        pid.setFF(0); // does not need a FF
 
         resetToAbsolute();
     }
 
-    private void configDriveMotor(){   
+    private void configDriveMotor(){
         mDriveMotor.setSmartCurrentLimit(Constants.SwerveConstants.drivePeakCurrentLimit);
         mDriveMotor.setInverted(Constants.SwerveConstants.driveMotorInvert);
         mDriveMotor.setIdleMode(Constants.SwerveConstants.driveNeutralMode);
-        
+
         mDriveMotor.setOpenLoopRampRate(Constants.SwerveConstants.openLoopRamp);
         mDriveMotor.setClosedLoopRampRate(Constants.SwerveConstants.closedLoopRamp);
 
-        mDriveMotor.getPIDController().setP(Constants.SwerveConstants.driveKP);
-        mDriveMotor.getPIDController().setI(Constants.SwerveConstants.driveKI);
-        mDriveMotor.getPIDController().setD(Constants.SwerveConstants.driveKD);
+        SparkPIDController pid = mDriveMotor.getPIDController();
+        pid.setP(Constants.SwerveConstants.driveKP);
+        pid.setI(Constants.SwerveConstants.driveKI);
+        pid.setD(Constants.SwerveConstants.driveKD);
+        pid.setFF(Constants.SwerveConstants.driveFF);
+
+//        mDriveMotor.setFF
 
         mDriveMotor.getEncoder().setPosition(0);
     }

@@ -116,6 +116,7 @@ public final class Constants {
     public static final double driveKI = 0.0;
     public static final double driveKD = 0.0;
     public static final double driveKF = 0.0;
+    public static final double driveFF = 0.0; // TODO: tune!!
 
     /*
      * Drive Motor Characterization Values
@@ -135,8 +136,8 @@ public final class Constants {
     public static final IdleMode angleNeutralMode = IdleMode.kBrake;
     public static final IdleMode driveNeutralMode = IdleMode.kBrake;
 
- 
-    /* Module Specific Constants - TO BE DONE FOR ARTEMIS*/ 
+
+      /* Module Specific Constants - TO BE DONE FOR ARTEMIS*/
     /* Front Left Module - Module 0 */
     public static final class Mod0 {
         public static final int driveMotorID = 51;
