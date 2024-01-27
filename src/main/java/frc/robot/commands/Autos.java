@@ -106,6 +106,28 @@ public final class Autos {
       return autoCommand;
   }
 
+  public static Command testPath() {
+    
+    ChoreoTrajectory ballSpeaker = Choreo.getTrajectory("testPath");
+    
+    PIDController xController = new PIDController(0, 0, 0);
+    PIDController yController = new PIDController(0, 0, 0);
+    PIDController thetaController = new PIDController(0, 0, 0);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    s_Swerve.resetOdometry(ballSpeaker.getInitialPose());
+    autoCommand = Choreo.choreoSwerveCommand(
+      ballSpeaker, 
+      s_Swerve::getPose, 
+      xController,
+      yController,
+      thetaController,
+      (ChassisSpeeds speeds) -> s_Swerve.autoDrive(speeds, false), //this has to be robot-relative, need to check that auto-drive function works for this (may have to use drive function and set field-relative to false idk)
+      () -> { return true; }, //decides whether or not the math should be mirrored (depends on alliance)
+      s_Swerve);
+
+      return autoCommand;
+  }
 
   private Autos() {
       throw new UnsupportedOperationException("This is a utility class!");
