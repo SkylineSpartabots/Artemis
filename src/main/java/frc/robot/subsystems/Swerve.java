@@ -25,10 +25,20 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.units.Distance;
+import edu.wpi.first.units.MutableMeasure;
 import edu.wpi.first.units.Power;
+import edu.wpi.first.units.Velocity;
+import edu.wpi.first.units.Voltage;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+
+import edu.wpi.first.units.Units.*;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 
 public class Swerve extends SubsystemBase {
@@ -50,7 +60,7 @@ public class Swerve extends SubsystemBase {
 
     private SwerveDrivePoseEstimator swerveOdometry;
     private Pigeon2 gyro;
-    private SwerveModule[] mSwerveMods;
+    private SwerveModule[] mSwerveMods ;
     public Supplier<Pose2d> poseSupplier = () -> getPose();
     public Consumer<Pose2d> poseConsumer = a -> {resetOdometry(a);};
     public BooleanSupplier inPosition = () -> inPosition();
@@ -63,12 +73,20 @@ public class Swerve extends SubsystemBase {
     public double yTolerance = 1.0;
     public double rotTolerance = 30;
 
+    private final MutableMeasure<Voltage> m_appliedVoltage = edu.wpi.first.units.MutableMeasure.mutable(edu.wpi.first.units.Units.Volts.of(0));
+    private final MutableMeasure<Distance> m_distance = edu.wpi.first.units.MutableMeasure.mutable(edu.wpi.first.units.Units.Meters.of(0));
+    private final MutableMeasure<Velocity<Distance>> m_velocity = edu.wpi.first.units.MutableMeasure.mutable(edu.wpi.first.units.Units.MetersPerSecond.of(0));
+
+    SysIdRoutine routine;
+
     //TODO: kalman filters here
 
     // initializes the swerve modules
     public Swerve() {
         gyro = new Pigeon2(Constants.SwerveConstants.pigeonID);
         gyro.getConfigurator().apply(new Pigeon2Configuration());
+
+
 
         mSwerveMods = new SwerveModule[] {
                 new SwerveModule(0, Constants.SwerveConstants.Mod0.constants),
@@ -80,6 +98,26 @@ public class Swerve extends SubsystemBase {
         swerveOdometry = 
         new SwerveDrivePoseEstimator(
             Constants.SwerveConstants.swerveKinematics, getYaw(), getModulePositions(), new Pose2d());
+        routine = 
+        new SysIdRoutine(
+            // empty config defaults to 1 volt/second ramp rate and 7 volt step voltage
+            new SysIdRoutine.Config(), 
+            new SysIdRoutine.Mechanism(
+                (Measure<Voltage> volts) -> {
+                    for (SwerveModule mod : mSwerveMods) {
+                        mod.setDriveVoltage(volts.in(edu.wpi.first.units.Units.Volts));
+                    }
+                },
+                log -> {
+                    for (SwerveModule mod : mSwerveMods) {
+                        log.motor("Mod " + mod.moduleNumber)
+                            .voltage(
+                                m_appliedVoltage.mut_replace(
+                                    mod.getDriveMotor().get() * RobotController.getBatteryVoltage(), edu.wpi.first.units.Units.Volts))
+                            .linearPosition(m_distance.mut_replace(mod.getDistance(), edu.wpi.first.units.Units.Meters))
+                            .linearVelocity(m_velocity.mut_replace(mod.getVelocity(), edu.wpi.first.units.Units.MetersPerSecond));
+                    }
+                } , this));
     }
 
         // used to apply any driving movement to the swerve modules
@@ -195,6 +233,14 @@ public class Swerve extends SubsystemBase {
                 && (Math.abs(getPose().getY() - goalPose.getY()) < yTolerance)
                 && (Math.abs(getPose().getRotation().getDegrees()
                         - goalPose.getRotation().getDegrees()) < rotTolerance);
+    }
+
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return routine.quasistatic(direction);
+    }
+
+    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+        return routine.dynamic(direction);
     }
 
     @Override

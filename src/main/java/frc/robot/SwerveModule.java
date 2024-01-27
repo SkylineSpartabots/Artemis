@@ -5,6 +5,8 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
@@ -43,6 +45,8 @@ public class SwerveModule {
     private CANSparkMax mAngleMotor;
     private CANSparkMax mDriveMotor;
     public CANcoder angleEncoder;
+
+    private PWMSparkMax test;
 
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.SwerveConstants.driveKS, Constants.SwerveConstants.driveKV, Constants.SwerveConstants.driveKA);
 
@@ -166,6 +170,23 @@ public class SwerveModule {
     }
 
     /**
+     * Gets the drive motor of this module. 
+     * @return The drive motor of this module.
+     */
+    public CANSparkMax getDriveMotor() {
+        
+        return mDriveMotor;
+    }
+
+    /**
+     * Sets the specified voltage to the drive motor.
+     * @param voltage The desired voltage to set the drive motor to.
+     */
+    public void setDriveVoltage(double voltage) {
+        mDriveMotor.setVoltage(voltage);
+    }
+    
+    /**
      * Gets the current and voltage going to the angle motor of the module.
      * @return A Power object containing the current current and voltage going to the angle motor.
      */
@@ -176,6 +197,22 @@ public class SwerveModule {
 
     public Power getAnglePower(){
         return new Power(mAngleMotor.getBusVoltage(), mAngleMotor.getOutputCurrent());
+    }
+
+    /**
+     * Gets the current distance traveled measured by the wheel 
+     * @return The distance traveled in meters
+     */
+    public double getDistance() {
+        return Conversions.motorToMeters(mDriveMotor.getEncoder().getPosition(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio);
+    }
+
+    /**
+     * Gets the current velocity of the wheel 
+     * @return The velcity in meters per second. 
+     */
+    public double getVelocity() {
+        return Conversions.motorToMPS(mDriveMotor.getEncoder().getVelocity(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio);
     }
 
     /**
