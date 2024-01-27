@@ -116,16 +116,10 @@ public final class Constants {
     public static final double driveKI = 0.0;
     public static final double driveKD = 0.0;
     public static final double driveKF = 0.0;
-    public static final double driveFF = 0.0; // TODO: tune!!
 
-    /*
-     * Drive Motor Characterization Values
-     * Divide SYSID values by 12 to convert from volts to percent output for CTRE
-     */
-    public static final double driveKS = (0.15932 / 12); 
-    public static final double driveKV = (2.3349 / 12); 
-    public static final double driveKA = (0.47337 / 12);
-
+    /* 1/(( ( (14*15)/(45.0*27) * 5676 ) / 60 ) * 0.31918) */ 
+    public static final double driveFF = 0.19161529689; // 1/(kDriveMotorFreeSpeedRPS * kWheelCircumferenceMeters)  1/ 94.6 * 0.31918 / ---> (1/30.1944) / 6.75
+// 
     /* Swerve Profiling Values */
     /* Meters per Second */
     public static final double maxSpeed = 4.5; 
