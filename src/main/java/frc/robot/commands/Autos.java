@@ -77,7 +77,8 @@ public final class Autos {
       yController,
       thetaController,
       (ChassisSpeeds speeds) -> s_Swerve.autoDrive(speeds, false), //this has to be robot-relative, need to check that auto-drive function works for this (may have to use drive function and set field-relative to false idk)
-      () -> { return true; }, //decides whether or not the math should be mirrored (depends on alliance)
+      () -> {Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
+        return alliance.isPresent() && alliance.get() == Alliance.Red;}, //decides whether or not the math should be mirrored (depends on alliance)
       s_Swerve);
 
       return autoCommand;
