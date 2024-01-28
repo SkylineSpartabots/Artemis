@@ -30,17 +30,32 @@ public final class Constants {
   // hardware ports for all hardware components on the robot
   // these include CAN IDs, pneumatic hub ports, etc. 
 
+    public static final class hardwarePIDs{
+    public static final double shooterkP = 0.5;
+    public static final double shooterkI = 0.00;
+    public static final double shooterkD = 0.00;
+  }
   public static final class HardwarePorts {
     // motors (predicted) IDs not fixed
-    public static final int shooterLeaderMotor = 1;
-    public static final int shooterFollowerMotor = 2;
+    public static final int shooterLeaderMotor = 22;
+    public static final int shooterFollowerMotor = 23;
+    public static final int intakeMotor = 24;
     public static final int climbLeaderMotor = 3;
     public static final int climbFollowerMotor = 4;
 
   }
 
+    /* Mechanism Current Limits */
+  public static final int intakeContinuousCurrentLimit = 30;
+  public static final int intakePeakCurrentLimit = 50;
+  public static final int shooterContinuousCurrentLimit = 30;
+  public static final int shooterPeakCurrentLimit = 50;
+
   public static final double FIELD_WIDTH_METERS = 8.21055;
   public static final double FIELD_LENGTH_METERS = 16.54175;
+
+  public static final IdleMode intakeNeutralMode = IdleMode.kCoast;
+  public static final IdleMode shooterNeutralMode = IdleMode.kBrake;
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
@@ -101,7 +116,7 @@ public final class Constants {
       * These values are used by the drive falcon to ramp in open loop and closed
       * loop driving.
       * We found a small open loop ramp (0.25) helps with tread wear, tipping, etc
-    */ // DID NOT CHANGE
+    */ // TODO: DID NOT CHANGE
     public static final double openLoopRamp = 0.25;
     public static final double closedLoopRamp = 0.0;
 
@@ -135,7 +150,6 @@ public final class Constants {
     public static final IdleMode angleNeutralMode = IdleMode.kBrake;
     public static final IdleMode driveNeutralMode = IdleMode.kBrake;
 
- 
     /* Module Specific Constants - TO BE DONE FOR ARTEMIS*/ 
     /* Front Left Module - Module 0 */
     public static final class Mod0 {
