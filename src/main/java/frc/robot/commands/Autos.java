@@ -27,7 +27,7 @@ public final class Autos {
   // Return auto selected in Shuffleboard
   public static Command getAutoCommand(AutoType auto) {
       switch (auto) {
-      case Test:
+      case test:
           return selectedAuto = test();
       case oneBallAmp:
           return selectedAuto = oneBallAmp();
@@ -40,7 +40,7 @@ public final class Autos {
   }
 
   public enum AutoType {
-      Test,
+      test,
       oneBallAmp,
       ballSpeaker
   }
@@ -55,8 +55,25 @@ public final class Autos {
 
 
   private static Command test() {
-    SmartDashboard.putBoolean("test auto successful", true);
-    return null;
+     ChoreoTrajectory test = Choreo.getTrajectory("test");
+    
+    PIDController xController = new PIDController(0, 0, 0);
+    PIDController yController = new PIDController(0, 0, 0);
+    PIDController thetaController = new PIDController(0, 0, 0);
+    thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    s_Swerve.resetOdometry(test.getInitialPose());
+    autoCommand = Choreo.choreoSwerveCommand(
+      test, 
+      s_Swerve::getPose, 
+      xController,
+      yController,
+      thetaController,
+      (ChassisSpeeds speeds) -> s_Swerve.autoDrive(speeds, false), //this has to be robot-relative, need to check that auto-drive function works for this (may have to use drive function and set field-relative to false idk)
+      () -> { return true; }, //decides whether or not the math should be mirrored (depends on alliance)
+      s_Swerve);
+
+      return autoCommand;
   }
   
   public static Command oneBallAmp() {
@@ -88,9 +105,9 @@ public final class Autos {
     
     ChoreoTrajectory ballSpeaker = Choreo.getTrajectory("r1_1BallSpeaker");
     
-    PIDController xController = new PIDController(0, 0, 0);
-    PIDController yController = new PIDController(0, 0, 0);
-    PIDController thetaController = new PIDController(0, 0, 0);
+    PIDController xController = new PIDController(5, 0, 0);
+    PIDController yController = new PIDController(5, 0, 0);
+    PIDController thetaController = new PIDController(2, 0, 0);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     s_Swerve.resetOdometry(ballSpeaker.getInitialPose());
@@ -106,7 +123,6 @@ public final class Autos {
 
       return autoCommand;
   }
-
 
   private Autos() {
       throw new UnsupportedOperationException("This is a utility class!");
