@@ -5,9 +5,10 @@ import javax.sound.midi.MidiEvent;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class IntakeShooter {
+public class IntakeShooter extends SubsystemBase {
 
     private static IntakeShooter mIntakeShooter;
 
@@ -40,15 +41,19 @@ public class IntakeShooter {
 
     public void configIntakeMotor(){
         mIntakeMotor.setSmartCurrentLimit(Constants.intakePeakCurrentLimit);
-        mIntakeMotor.setInverted(true);
+        mIntakeMotor.setInverted(false);
         mIntakeMotor.setIdleMode(Constants.shooterNeutralMode);
+        mIntakeMotor.setOpenLoopRampRate(Constants.SwerveConstants.openLoopRamp);
+
     }
 
     public void configLeaderMotor(){
         mLeaderShooter.setSmartCurrentLimit(Constants.intakePeakCurrentLimit);
         mLeaderShooter.setInverted(true);
         mLeaderShooter.setIdleMode(Constants.shooterNeutralMode);
-        
+        mLeaderShooter.setOpenLoopRampRate(Constants.SwerveConstants.openLoopRamp);
+
+
         // mLeaderShooter.setOpenLoopRampRate(Constants.SwerveConstants.openLoopRamp);
         // mLeaderShooter.setClosedLoopRampRate(Constants.SwerveConstants.closedLoopRamp);
 
@@ -58,7 +63,7 @@ public class IntakeShooter {
     }
 
     public void configFollowerMotor(){
-        mFollowerShooter.follow(mLeaderShooter, true);
+        mFollowerShooter.follow(mLeaderShooter, false);
         mFollowerShooter.setIdleMode(Constants.shooterNeutralMode);
         
         // mLeaderShooter.getPIDController().setP(Constants.SwerveConstants.driveKP);

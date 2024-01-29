@@ -8,6 +8,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.IntakeShooter;
+import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Swerve;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
@@ -27,6 +28,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Swerve s_Swerve = Swerve.getInstance();
   private final IntakeShooter s_IntakeShooter = IntakeShooter.getInstance();
+  private final Pivot s_Pivot = Pivot.getInstance();
 
   private final XboxController driver = new XboxController(0);
   private final XboxController operator = new XboxController(1);
@@ -112,7 +114,7 @@ public class RobotContainer {
     // driver controls
     driverBack.onTrue(new InstantCommand(() -> s_Swerve.resetOdometry(new Pose2d())));
 
-    driverA.onTrue(new InstantCommand(() -> s_IntakeShooter.setPercentage(0.7)));
+    driverA.onTrue(new InstantCommand(() -> s_IntakeShooter.setPercentage(1.0)));
     driverB.onTrue(new InstantCommand(() -> s_IntakeShooter.setPercentage(0)));
 
   }
