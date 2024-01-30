@@ -66,6 +66,7 @@ public final class Constants {
   public static final IdleMode intakeNeutralMode = IdleMode.kCoast;
   public static final IdleMode shooterNeutralMode = IdleMode.kBrake;
 
+  public static final double noteIntakeDistance = 70.0;
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
@@ -77,6 +78,8 @@ public final class Constants {
     public static final COTSFalconSwerveConstants chosenModule = COTSFalconSwerveConstants
     .SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4_L2);
 
+    //general constants
+    
     /* Drivetrain Constants */
     public static final double trackWidth = 0.5715;
     public static final double wheelBase = 0.5715;
