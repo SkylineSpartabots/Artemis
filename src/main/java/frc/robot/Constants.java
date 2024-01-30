@@ -49,6 +49,7 @@ public final class Constants {
     public static final int climbLeaderMotor = 3;
     public static final int climbFollowerMotor = 4;
     public static final int pivotMotor = 30;
+    public static final int pivotCANcoderID = 31;
 
   }
 
@@ -78,8 +79,8 @@ public final class Constants {
     .SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4_L2);
 
     /* Drivetrain Constants */
-    public static final double trackWidth = 0.5715;
-    public static final double wheelBase = 0.5715;
+    public static final double trackWidth = 0.47625;
+    public static final double wheelBase = 0.47625;
     public static final double wheelCircumference = chosenModule.wheelCircumference;
     /*
     * Swerve Kinematics
