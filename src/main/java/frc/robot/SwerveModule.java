@@ -1,22 +1,19 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import frc.lib.math.Conversions;
 import frc.lib.util.CTREModuleState;
 import frc.lib.util.SwerveModuleConstants;
-
-import javax.print.attribute.standard.PagesPerMinute;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.MagnetSensorConfigs;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
-import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -44,7 +41,7 @@ public class SwerveModule {
     private CANSparkMax mDriveMotor;
     public CANcoder angleEncoder;
 
-    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.SwerveConstants.driveKS, Constants.SwerveConstants.driveKV, Constants.SwerveConstants.driveKA);
+    private PWMSparkMax test;
 
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
         this.moduleNumber = moduleNumber;
@@ -133,24 +130,30 @@ public class SwerveModule {
         mAngleMotor.setInverted(Constants.SwerveConstants.angleMotorInvert);
         mAngleMotor.setIdleMode(Constants.SwerveConstants.angleNeutralMode);
 
-        mAngleMotor.getPIDController().setP(Constants.SwerveConstants.angleKP);
-        mAngleMotor.getPIDController().setI(Constants.SwerveConstants.angleKI);
-        mAngleMotor.getPIDController().setD(Constants.SwerveConstants.angleKD);
+        SparkPIDController pid = mAngleMotor.getPIDController();
+        pid.setP(Constants.SwerveConstants.angleKP);
+        pid.setI(Constants.SwerveConstants.angleKI);
+        pid.setD(Constants.SwerveConstants.angleKD);
+        pid.setFF(0); // does not need a FF
 
         resetToAbsolute();
     }
 
-    private void configDriveMotor(){   
+    private void configDriveMotor(){
         mDriveMotor.setSmartCurrentLimit(Constants.SwerveConstants.drivePeakCurrentLimit);
         mDriveMotor.setInverted(Constants.SwerveConstants.driveMotorInvert);
         mDriveMotor.setIdleMode(Constants.SwerveConstants.driveNeutralMode);
-        
+
         mDriveMotor.setOpenLoopRampRate(Constants.SwerveConstants.openLoopRamp);
         mDriveMotor.setClosedLoopRampRate(Constants.SwerveConstants.closedLoopRamp);
 
-        mDriveMotor.getPIDController().setP(Constants.SwerveConstants.driveKP);
-        mDriveMotor.getPIDController().setI(Constants.SwerveConstants.driveKI);
-        mDriveMotor.getPIDController().setD(Constants.SwerveConstants.driveKD);
+        SparkPIDController pid = mDriveMotor.getPIDController();
+        pid.setP(Constants.SwerveConstants.driveKP);
+        pid.setI(Constants.SwerveConstants.driveKI);
+        pid.setD(Constants.SwerveConstants.driveKD);
+        pid.setFF(Constants.SwerveConstants.driveFF);
+
+//        mDriveMotor.setFF
 
         mDriveMotor.getEncoder().setPosition(0);
     }
@@ -166,6 +169,23 @@ public class SwerveModule {
     }
 
     /**
+     * Gets the drive motor of this module. 
+     * @return The drive motor of this module.
+     */
+    public CANSparkMax getDriveMotor() {
+        
+        return mDriveMotor;
+    }
+
+    /**
+     * Sets the specified voltage to the drive motor.
+     * @param voltage The desired voltage to set the drive motor to.
+     */
+    public void setDriveVoltage(double voltage) {
+        mDriveMotor.setVoltage(voltage);
+    }
+    
+    /**
      * Gets the current and voltage going to the angle motor of the module.
      * @return A Power object containing the current current and voltage going to the angle motor.
      */
@@ -176,6 +196,22 @@ public class SwerveModule {
 
     public Power getAnglePower(){
         return new Power(mAngleMotor.getBusVoltage(), mAngleMotor.getOutputCurrent());
+    }
+
+    /**
+     * Gets the current distance traveled measured by the wheel 
+     * @return The distance traveled in meters
+     */
+    public double getDistance() {
+        return Conversions.motorToMeters(mDriveMotor.getEncoder().getPosition(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio);
+    }
+
+    /**
+     * Gets the current velocity of the wheel 
+     * @return The velcity in meters per second. 
+     */
+    public double getVelocity() {
+        return Conversions.motorToMPS(mDriveMotor.getEncoder().getVelocity(), Constants.SwerveConstants.wheelCircumference, Constants.SwerveConstants.driveGearRatio);
     }
 
     /**
