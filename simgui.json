@@ -1,0 +1,124 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "CANCoder (v6)[10]": {
+        "header": {
+          "open": true
+        }
+      },
+      "CANCoder (v6)[9]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Pigeon 2 (v6)[6]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [51]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [52]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [53]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [54]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [55]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [56]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [57]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [58]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "AdvantageKit": {
+        "RealOutputs": {
+          "Odometry": {
+            "Pose2d##v_/AdvantageKit/RealOutputs/Odometry/Robot": {
+              "Rotation2d##v_rotation": {
+                "open": true
+              },
+              "Translation2d##v_translation": {
+                "open": true
+              },
+              "open": true
+            },
+            "open": true
+          },
+          "SwerveStates": {
+            "open": true
+          },
+          "open": true
+        },
+        "open": true
+      },
+      "Pose2d##v_MyPose": {
+        "Rotation2d##v_rotation": {
+          "open": true
+        },
+        "Translation2d##v_translation": {
+          "open": true
+        },
+        "open": true
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "AdvantageScope@1": {
+      "Publishers": {
+        "open": true
+      },
+      "Subscribers": {
+        "open": true
+      },
+      "open": true
+    },
+    "Clients": {
+      "open": true
+    },
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "Publishers": {
+        "open": true
+      },
+      "open": true
+    },
+    "visible": true
+  }
+}

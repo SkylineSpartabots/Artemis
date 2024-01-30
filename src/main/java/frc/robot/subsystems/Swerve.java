@@ -7,10 +7,14 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -18,6 +22,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.units.Power;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -31,7 +41,14 @@ public class Swerve extends SubsystemBase {
         return instance;
     }
 
-    private SwerveDriveOdometry swerveOdometry;
+    //for logging pose data during simulation
+    StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault()
+    .getStructTopic("MyPose", Pose2d.struct).publish();
+
+    // StructArrayPublisher<Pose2d> arrayPublisher = NetworkTableInstance.getDefault()
+    //     .getStructArrayTopic("MyPoseArray", Pose2d.struct).publish(); for multiple poses
+
+    private SwerveDrivePoseEstimator swerveOdometry;
     private Pigeon2 gyro;
     private SwerveModule[] mSwerveMods;
     public Supplier<Pose2d> poseSupplier = () -> getPose();
@@ -46,9 +63,11 @@ public class Swerve extends SubsystemBase {
     public double yTolerance = 1.0;
     public double rotTolerance = 30;
 
+    //TODO: kalman filters here
+
     // initializes the swerve modules
     public Swerve() {
-        gyro = new Pigeon2(Constants.SwerveConstants.pigeonID, "2976 CANivore");
+        gyro = new Pigeon2(Constants.SwerveConstants.pigeonID);
         gyro.getConfigurator().apply(new Pigeon2Configuration());
 
         mSwerveMods = new SwerveModule[] {
@@ -58,7 +77,9 @@ public class Swerve extends SubsystemBase {
                 new SwerveModule(3, Constants.SwerveConstants.Mod3.constants)
         };
 
-        swerveOdometry = new SwerveDriveOdometry(Constants.SwerveConstants.swerveKinematics, getYaw(), getModulePositions());
+        swerveOdometry = 
+        new SwerveDrivePoseEstimator(
+            Constants.SwerveConstants.swerveKinematics, getYaw(), getModulePositions(), new Pose2d());
     }
 
         // used to apply any driving movement to the swerve modules
@@ -91,8 +112,9 @@ public class Swerve extends SubsystemBase {
     }
 
     // returns pose of the robot
+    @AutoLogOutput(key = "Odometry/Robot")
     public Pose2d getPose() {
-        return swerveOdometry.getPoseMeters();
+        return swerveOdometry.getEstimatedPosition();
     }
 
     // resets odometry to the provided pose
@@ -102,6 +124,7 @@ public class Swerve extends SubsystemBase {
     }
 
     // gets the state of the swerve modules
+    @AutoLogOutput(key = "SwerveStates/Measured")
     public SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
         for (SwerveModule mod : mSwerveMods) {
@@ -109,6 +132,16 @@ public class Swerve extends SubsystemBase {
         }
         return states;
     }
+
+    // gets the voltage and current of the swerve modules
+    @AutoLogOutput(key = "SwerveStates/Measured")
+    public Object[] getModulePowers(){
+        Object[] powers = new Object[4];
+        for(SwerveModule mod : mSwerveMods){
+            powers[mod.moduleNumber] = mod.getAnglePower();
+        }
+        return powers;
+    } 
     
     public void zeroGyro() {
         gyro.setYaw(0);
@@ -147,7 +180,7 @@ public class Swerve extends SubsystemBase {
     // checks if the swerve is being used for an auto generated path like OTF or auto
     public boolean pathInProgress() {
         return !getDefaultCommand().isScheduled();
-    }
+    }   
 
     // these two methods below are used in auto to set the parameters for the goal pose range and execute commands in
     // auto when the robot gets within that range of the goal pose
@@ -166,6 +199,27 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic() {
+      // This method will be called once per scheduler run
+        for(SwerveModule mod : mSwerveMods) {
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
+            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Voltage", mod.getDrivePower().voltage);
 
+        }
+        SmartDashboard.putBoolean("True", false);
+        SmartDashboard.putNumber("Can Coder", mSwerveMods[0].angleEncoder.getAbsolutePosition().getValueAsDouble());
+        SmartDashboard.putNumber("Pigeon", getYaw().getDegrees());
+        SmartDashboard.updateValues();
+
+        swerveOdometry.update(getYaw(), getModulePositions());
+    //   Pose2d currPose = getPose();
+    //   publisher.set(currPose);
+    }
+
+    @Override
+    public void simulationPeriodic() {
+        // This method will be called once per scheduler run during simulation
+        Pose2d currPose = getPose();
+        publisher.set(currPose);
+        swerveOdometry.update(getYaw(), getModulePositions());
     }
 }

@@ -5,10 +5,8 @@
 package frc.robot;
 
 
-
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.revrobotics.CANSparkBase.IdleMode;
 
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -34,17 +32,39 @@ public final class Constants {
   // hardware ports for all hardware components on the robot
   // these include CAN IDs, pneumatic hub ports, etc. 
 
+  public static final class hardwarePIDs{
+    public static final double shooterkP = 0.5;
+    public static final double shooterkI = 0.00;
+    public static final double shooterkD = 0.00;
+
+    public static final double pivotkP = 0.5;
+    public static final double pivotkI = 0.00;
+    public static final double pivotkD = 0.00;
+  }
   public static final class HardwarePorts {
     // motors (predicted) IDs not fixed
-    public static final int shooterLeaderMotor = 1;
-    public static final int shooterFollowerMotor = 2;
+    public static final int shooterLeaderMotor = 22;
+    public static final int shooterFollowerMotor = 23;
+    public static final int intakeMotor = 24;
     public static final int climbLeaderMotor = 3;
     public static final int climbFollowerMotor = 4;
+    public static final int pivotMotor = 30;
 
   }
 
+    /* Mechanism Current Limits */
+  public static final int intakeContinuousCurrentLimit = 30;
+  public static final int intakePeakCurrentLimit = 70;
+  public static final int shooterContinuousCurrentLimit = 30;
+  public static final int shooterPeakCurrentLimit = 70;
+  public static final int pivotContinuousCurrentLimit = 30;
+  public static final int pivotPeakCurrentLimit = 60;
+
   public static final double FIELD_WIDTH_METERS = 8.21055;
   public static final double FIELD_LENGTH_METERS = 16.54175;
+
+  public static final IdleMode intakeNeutralMode = IdleMode.kCoast;
+  public static final IdleMode shooterNeutralMode = IdleMode.kBrake;
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
@@ -52,7 +72,7 @@ public final class Constants {
 
   public static final class SwerveConstants {
 
-    public static final int pigeonID = 15;
+    public static final int pigeonID = 6;
 
     public static final COTSFalconSwerveConstants chosenModule = COTSFalconSwerveConstants
     .SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4_L2);
@@ -77,8 +97,11 @@ public final class Constants {
     public static final double angleGearRatio = chosenModule.angleGearRatio;
 
     /* Motor Inverts */
-    public static final InvertedValue angleMotorInvert = chosenModule.angleMotorInvert;
-    public static final InvertedValue driveMotorInvert = chosenModule.driveMotorInvert;
+    public static final boolean angleMotorInvert = chosenModule.angleMotorInvert;
+    public static final boolean driveMotorInvert = chosenModule.driveMotorInvert;
+
+    /* Angle Encoder Gear Ratio */
+    public static final double angleEncoderGearRatio = 1;
 
     /* Angle Encoder Invert */
     public static final SensorDirectionValue canCoderInvert = chosenModule.canCoderInvert;
@@ -102,7 +125,7 @@ public final class Constants {
       * These values are used by the drive falcon to ramp in open loop and closed
       * loop driving.
       * We found a small open loop ramp (0.25) helps with tread wear, tipping, etc
-    */ // DID NOT CHANGE
+    */ // TODO: DID NOT CHANGE
     public static final double openLoopRamp = 0.25;
     public static final double closedLoopRamp = 0.0;
 
@@ -132,47 +155,47 @@ public final class Constants {
     /** Radians per Second */
     public static final double maxAngularVelocity = 7.0; 
 
-    /* Motor Neutral Modes */
-    public static final NeutralModeValue driveNeutralMode = NeutralModeValue.Brake;
-    public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Brake;
- 
+    /* Neutral Modes */
+    public static final IdleMode angleNeutralMode = IdleMode.kBrake;
+    public static final IdleMode driveNeutralMode = IdleMode.kBrake;
+
     /* Module Specific Constants - TO BE DONE FOR ARTEMIS*/ 
     /* Front Left Module - Module 0 */
     public static final class Mod0 {
-        public static final int driveMotorID = 2;
-        public static final int angleMotorID = 1;
+        public static final int driveMotorID = 51;
+        public static final int angleMotorID = 52;
         public static final int canCoderID = 9;
-        public static final Rotation2d angleOffset = Rotation2d.fromDegrees(338.17291259765625);
+        public static final Rotation2d angleOffset = Rotation2d.fromDegrees(380.74);
         public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                 canCoderID, angleOffset);
     }
 
     /* Front Right Module - Module 1 */
     public static final class Mod1 {
-        public static final int driveMotorID = 8;
-        public static final int angleMotorID = 7;
+        public static final int driveMotorID = 53;
+        public static final int angleMotorID = 54;
         public static final int canCoderID = 12;
-        public static final Rotation2d angleOffset = Rotation2d.fromDegrees(165.399169921875);
+        public static final Rotation2d angleOffset = Rotation2d.fromDegrees(286.7);
         public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                 canCoderID, angleOffset);
     }
 
     /* Back Left Module - Module 2 */
     public static final class Mod2 {
-        public static final int driveMotorID = 4;
-        public static final int angleMotorID = 3;
+        public static final int driveMotorID = 55;
+        public static final int angleMotorID = 56;
         public static final int canCoderID = 10;
-        public static final Rotation2d angleOffset = Rotation2d.fromDegrees(350.9994506835938);
+        public static final Rotation2d angleOffset = Rotation2d.fromDegrees(356.66);
         public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                 canCoderID, angleOffset);
     }
 
     /* Back Right Module - Module 3 */
     public static final class Mod3 {
-        public static final int driveMotorID = 6;
-        public static final int angleMotorID = 5;
+        public static final int driveMotorID = 57;
+        public static final int angleMotorID = 58;
         public static final int canCoderID = 11;
-        public static final Rotation2d angleOffset = Rotation2d.fromDegrees(33.3597412109375);
+        public static final Rotation2d angleOffset = Rotation2d.fromDegrees(486.3);
         public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                 canCoderID, angleOffset);
     }

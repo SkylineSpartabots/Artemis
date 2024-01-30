@@ -1,81 +1,70 @@
-/* 
-conversion constants, used by the swerve drivetrain library we use (team 364)
-https://github.com/Team364/BaseFalconSwerve
-*/
-
 package frc.lib.math;
 
 public class Conversions {
-
+    
     /**
-     * @param positionCounts CANCoder Position Counts
-     * @param gearRatio      Gear Ratio between CANCoder and Mechanism
+     * @param rotations CANCoder Rotations
+     * @param gearRatio Gear Ratio between CANCoder and Mechanism
      * @return Degrees of Rotation of Mechanism
      */
-    public static double CANcoderToDegrees(double positionCounts, double gearRatio) {
-        return positionCounts * (360.0 / (gearRatio * 4096.0));
+    public static double CANcoderToDegrees(double rotations, double gearRatio) {
+        return rotations * (360.0 / gearRatio);
     }
 
     /**
      * @param degrees   Degrees of rotation of Mechanism
      * @param gearRatio Gear Ratio between CANCoder and Mechanism
-     * @return CANCoder Position Counts
+     * @return CANCoder Rotations
      */
     public static double degreesToCANcoder(double degrees, double gearRatio) {
-        return degrees / (360.0 / (gearRatio * 4096.0));
+        return degrees / (360.0 / gearRatio);
     }
 
+    
     /**
-     * @param counts    Falcon Position Counts
-     * @param gearRatio Gear Ratio between Falcon and Mechanism
+     * @param revolutions Motor Revolutions
+     * @param gearRatio   Gear Ratio between Motor and Mechanism
      * @return Degrees of Rotation of Mechanism
      */
-    public static double falconToDegrees(double positionCounts, double gearRatio) {
-        return positionCounts * (360.0 / (gearRatio * 2048.0));
+    public static double motorToDegrees(double revolutions, double gearRatio) {
+        return revolutions * (360 / gearRatio);
     }
 
     /**
      * @param degrees   Degrees of rotation of Mechanism
-     * @param gearRatio Gear Ratio between Falcon and Mechanism
-     * @return Falcon Position Counts
+     * @param gearRatio Gear Ratio between Motor and Mechanism
+     * @return Motor rotations
      */
-    public static double degreesToFalcon(double degrees, double gearRatio) {
-        return degrees / (360.0 / (gearRatio * 2048.0));
+    public static double degreesToMotor(double degrees, double gearRatio) {
+        return degrees / (360 / gearRatio);
     }
 
     /**
-     * @param velocityCounts Falcon Velocity Counts
-     * @param gearRatio      Gear Ratio between Falcon and Mechanism (set to 1 for
-     *                       Falcon RPM)
+     * @param motorRPM  Motor RPM
+     * @param gearRatio Gear Ratio between Motor and Mechanism
      * @return RPM of Mechanism
      */
-    public static double falconToRPM(double velocityCounts, double gearRatio) {
-        double motorRPM = velocityCounts * (600.0 / 2048.0);
-        double mechRPM = motorRPM / gearRatio;
-        return mechRPM;
+    public static double motorToWheelRPM(double motorRPM, double gearRatio) {
+        return motorRPM / gearRatio;
     }
 
     /**
      * @param RPM       RPM of mechanism
-     * @param gearRatio Gear Ratio between Falcon and Mechanism (set to 1 for Falcon
-     *                  RPM)
-     * @return RPM of Mechanism
+     * @param gearRatio Gear Ratio between Motor and Mechanism
+     * @return RPM of Motor
      */
-    public static double RPMToFalcon(double RPM, double gearRatio) {
-        double motorRPM = RPM * gearRatio;
-        double sensorCounts = motorRPM * (2048.0 / 600.0);
-        return sensorCounts;
+    public static double wheelRPMToMotor(double RPM, double gearRatio) {
+        return RPM * gearRatio;
     }
 
     /**
-     * @param velocitycounts Falcon Velocity Counts
-     * @param circumference  Circumference of Wheel
-     * @param gearRatio      Gear Ratio between Falcon and Mechanism (set to 1 for
-     *                       Falcon MPS)
-     * @return Falcon Velocity Counts
+     * @param motorRPM      Motor RPM
+     * @param circumference Circumference of Wheel
+     * @param gearRatio     Gear Ratio between Motor and Mechanism 
+     * @return Meters Per Second
      */
-    public static double falconToMPS(double velocitycounts, double circumference, double gearRatio) {
-        double wheelRPM = falconToRPM(velocitycounts, gearRatio);
+    public static double motorToMPS(double motorRPM, double circumference, double gearRatio) {
+        double wheelRPM = motorToWheelRPM(motorRPM, gearRatio);
         double wheelMPS = (wheelRPM * circumference) / 60;
         return wheelMPS;
     }
@@ -83,33 +72,32 @@ public class Conversions {
     /**
      * @param velocity      Velocity MPS
      * @param circumference Circumference of Wheel
-     * @param gearRatio     Gear Ratio between Falcon and Mechanism (set to 1 for
-     *                      Falcon MPS)
-     * @return Falcon Velocity Counts
+     * @param gearRatio     Gear Ratio between Motor and Mechanism (set to 1 for
+     *                      Motor MPS)
+     * @return Motor RPM
      */
-    public static double MPSToFalcon(double velocity, double circumference, double gearRatio) {
-        double wheelRPM = ((velocity * 60) / circumference);
-        double wheelVelocity = RPMToFalcon(wheelRPM, gearRatio);
-        return wheelVelocity;
+    public static double MPSToMotor(double velocity, double circumference, double gearRatio){
+        double wheelRPM = (velocity * 60) / circumference;
+        return wheelRPMToMotor(wheelRPM, gearRatio);
     }
 
     /**
-     * @param positionCounts Falcon Position Counts
-     * @param circumference  Circumference of Wheel
-     * @param gearRatio      Gear Ratio between Falcon and Wheel
+     * @param rotations     Motor rotations
+     * @param circumference Circumference of Wheel
+     * @param gearRatio     Gear Ratio between Motor and Wheel
      * @return Meters
      */
-    public static double falconToMeters(double positionCounts, double circumference, double gearRatio) {
-        return positionCounts * (circumference / (gearRatio * 2048.0));
+    public static double motorToMeters(double rotations, double circumference, double gearRatio) {
+        return rotations * (circumference / gearRatio);
     }
 
     /**
      * @param meters        Meters
      * @param circumference Circumference of Wheel
-     * @param gearRatio     Gear Ratio between Falcon and Wheel
-     * @return Falcon Position Counts
+     * @param gearRatio     Gear Ratio between Motor and Wheel
+     * @return Motor Revolutions
      */
-    public static double MetersToFalcon(double meters, double circumference, double gearRatio) {
-        return meters / (circumference / (gearRatio * 2048.0));
+    public static double metersToMotor(double meters, double circumference, double gearRatio) {
+        return meters / (circumference / gearRatio);
     }
 }
