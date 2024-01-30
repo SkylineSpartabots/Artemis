@@ -48,11 +48,20 @@ public class IntakeShooter extends SubsystemBase {
         m_colorMatcherIntake.addColorMatch(new Color(255, 165, 0)); //rgb values for orange, could be inaccurate. YBVS
     }
 
+    /**
+     * Sets the percentage output of the intake and shooter motors
+     * @param val a value from [0, 1]
+     */
     public void setPercentage(double val){
         mLeaderShooter.set(val);
         mIntakeMotor.set(val);
     }
 
+    /**
+     * Sets the output of the intake motor
+     * @param val either a percentage from [0, 1] or desired voltage
+     * @param voltageControl is voltage control if true
+     */
     public void setIntake(double val, boolean voltageControl){
         if(voltageControl){
             mIntakeMotor.setVoltage(val);
@@ -101,6 +110,10 @@ public class IntakeShooter extends SubsystemBase {
         // mLeaderShooter.getPIDController().setD(Constants.SwerveConstants.driveKD);
     }
 
+    /**
+     * 
+     * @return whether the intake color sensor's proximity value is greater than a set threshold
+     */
     public boolean hasNote(){
         return m_intakeSensor.getProximity() >= Constants.noteIntakeDistance;
     }
