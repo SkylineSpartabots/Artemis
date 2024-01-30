@@ -10,7 +10,9 @@ import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -48,6 +50,17 @@ public final class Constants {
     public static final int climbFollowerMotor = 4;
     public static final int pivotMotor = 30;
 
+  }
+
+  public final class Vision {
+    public static final String aprilTagCamName = "orangepi";
+    public static final int aprilTagMax = 16;
+    public static final Translation3d cameraOffsets = new Translation3d(
+            // TODO set offset once CAD is done
+            Units.inchesToMeters(0), // x (front-back) offset
+            Units.inchesToMeters(0), // y (left-right) offset
+            Units.inchesToMeters(0) // z (up-down) offset
+    );
   }
 
     /* Mechanism Current Limits */
@@ -104,7 +117,7 @@ public final class Constants {
     /* Angle Encoder Invert */
     public static final SensorDirectionValue canCoderInvert = chosenModule.canCoderInvert;
 
-    /* Swerve Current Limitting */ // DID NOT CHANGE
+    /* Swerve Current Limiting */ // DID NOT CHANGE
     public static final int angleContinuousCurrentLimit = 25;
     public static final int anglePeakCurrentLimit = 40;
     public static final double anglePeakCurrentDuration = 0.1;
