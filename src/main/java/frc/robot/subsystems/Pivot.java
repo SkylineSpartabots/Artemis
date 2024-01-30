@@ -33,7 +33,7 @@ public class Pivot extends SubsystemBase {
 
     private CANSparkFlex mPivotMotor;
     private CANcoder pivotCANcoder;
-    private PivotState curState = PivotState.GROUND;
+    private PivotState currState = PivotState.GROUND;
 
     public Pivot() {
         mPivotMotor = new CANSparkFlex(Constants.HardwarePorts.pivotMotor, MotorType.kBrushless);
@@ -41,14 +41,14 @@ public class Pivot extends SubsystemBase {
 
         pivotCANcoder = new CANcoder(Constants.HardwarePorts.pivotCANcoderID);
         configCANcoder();
-    }
+    } 
 
     /**
      * Sets the desired state for the pivot
      * @param state Desired state
      */
     public void setState(PivotState state) {
-        curState = state;
+        currState = state;
     }
 
     /**
@@ -63,7 +63,7 @@ public class Pivot extends SubsystemBase {
      * @return Current set point in CANcoder values. 
      */
     public double getSetPoint() {
-        return curState.pos;
+        return currState.pos;
     }
 
     /**
