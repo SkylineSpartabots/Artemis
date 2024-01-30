@@ -6,12 +6,10 @@ import frc.robot.subsystems.IntakeShooter;
 public class SmartIntake extends Command{
 
     private final IntakeShooter s_IntakeShooter;
-    private boolean finished;
 
     public SmartIntake(){
         s_IntakeShooter = IntakeShooter.getInstance();
         addRequirements(s_IntakeShooter);
-        finished = false;
     }
 
     @Override

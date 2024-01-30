@@ -33,7 +33,7 @@ public class SetPivot extends Command {
         s_Pivot.setVoltage(voltage);
     }
 
-    	@Override
+    @Override
 	public boolean isFinished() {
 		return Math.abs(s_Pivot.getSetPoint() - s_Pivot.getCANcoderPosition()) < 45;
 	}
