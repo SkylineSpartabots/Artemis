@@ -8,6 +8,7 @@ package frc.robot;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.CANSparkBase.IdleMode;
 
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -15,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
+
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -49,6 +51,7 @@ public final class Constants {
     public static final int climbLeaderMotor = 3;
     public static final int climbFollowerMotor = 4;
     public static final int pivotMotor = 30;
+    public static final int pivotCANcoderID = 31;
 
   }
 
@@ -77,6 +80,7 @@ public final class Constants {
   public static final IdleMode intakeNeutralMode = IdleMode.kCoast;
   public static final IdleMode shooterNeutralMode = IdleMode.kBrake;
 
+  public static final double noteIntakeDistance = 70.0;
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
@@ -88,9 +92,11 @@ public final class Constants {
     public static final COTSFalconSwerveConstants chosenModule = COTSFalconSwerveConstants
     .SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4_L2);
 
+    //general constants
+    
     /* Drivetrain Constants */
-    public static final double trackWidth = 0.5715;
-    public static final double wheelBase = 0.5715;
+    public static final double trackWidth = 0.47625;
+    public static final double wheelBase = 0.47625;
     public static final double wheelCircumference = chosenModule.wheelCircumference;
     /*
     * Swerve Kinematics
@@ -211,5 +217,4 @@ public final class Constants {
                 canCoderID, angleOffset);
     }
   }
-
 }
