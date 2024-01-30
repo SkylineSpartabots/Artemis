@@ -100,7 +100,7 @@ public class IntakeShooter extends SubsystemBase {
         // mLeaderShooter.getPIDController().setI(Constants.SwerveConstants.driveKI);
         // mLeaderShooter.getPIDController().setD(Constants.SwerveConstants.driveKD);
     }
-
+    
     public boolean hasNote(){
         return m_intakeSensor.getProximity() >= Constants.noteIntakeDistance;
     }

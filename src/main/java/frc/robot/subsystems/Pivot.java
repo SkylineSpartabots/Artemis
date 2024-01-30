@@ -43,22 +43,40 @@ public class Pivot extends SubsystemBase {
         configCANcoder();
     }
 
+    /**
+     * Sets the desired state for the pivot
+     * @param state Desired state
+     */
     public void setState(PivotState state) {
         curState = state;
     }
 
+    /**
+     * Gets the current position measured by the CANcoder
+     * @return Current position measured by CANcoder
+     */
     public double getCANcoderPosition() {
         return pivotCANcoder.getPosition().getValueAsDouble();
     }
-
+    /**
+     * Gets the current set point of the pivot. 
+     * @return Current set point in CANcoder values. 
+     */
     public double getSetPoint() {
         return curState.pos;
     }
 
+    /**
+     * Sets the voltage of the pivot motor
+     * @param Desired voltage. 
+     */
     public void setVoltage(double voltage) {
         mPivotMotor.setVoltage(voltage);
     }
 
+    /**
+     * Configures the pivot motor with current limit, idle mode, and PID values
+     */
     private void configMotor() {
         mPivotMotor.setSmartCurrentLimit(Constants.pivotPeakCurrentLimit);
         mPivotMotor.setIdleMode(IdleMode.kBrake);
@@ -67,7 +85,10 @@ public class Pivot extends SubsystemBase {
         mPivotMotor.getPIDController().setI(Constants.hardwarePIDs.pivotkI);
         mPivotMotor.getPIDController().setD(Constants.hardwarePIDs.pivotkD);
     }
-    
+
+    /**
+     * Configures the pivot CANcoder with sensor direction and absolute range. 
+     */
     private void configCANcoder(){  
         /* Swerve CANCoder Configuration */
         // CANcoder is always initialized to absolute position on boot in Phoenix 6 - https://www.chiefdelphi.com/t/what-kind-of-encoders-are-built-into-the-kraken-motors/447253/7
