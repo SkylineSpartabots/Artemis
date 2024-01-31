@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Pivot.PivotState;
@@ -56,10 +57,18 @@ public final class Autos {
       () -> { Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
         return alliance.isPresent() && alliance.get() == Alliance.Red; }, //decides whether or not the math should be mirrored (depends on alliance)
       s_Swerve);
-      commandsToSchedule.add(swerveCommand);
-      commandsToSchedule.add(auto.mechCommands[i]);
+
+      if(auto.parallelToPath[i]){
+        ParallelCommandGroup curr = new ParallelCommandGroup();
+        curr.addCommands(auto.mechCommands[i]);
+        curr.addCommands(swerveCommand);
+        commandsToSchedule.add(curr);
+      } else {
+        commandsToSchedule.add(swerveCommand);
+        commandsToSchedule.add(auto.mechCommands[i]);
+      }
     }
-    SequentialCommandGroup group = new SequentialCommandGroup(null);
+    SequentialCommandGroup group = new SequentialCommandGroup();
     for (Command i : commandsToSchedule) {
       group.addCommands(i);
     }
@@ -74,17 +83,28 @@ public final class Autos {
    * will be executed in the order they are in the array during the auto path. Refer to runAutoCommand(AutoType auto).
    */
   public enum AutoType {
+
+    //when writing enums, if you want multiple mechCommands to run before the next path, put them in a sequential command group
+    //if you want those mechCommands to run in parallel, put them in a parallelCommandGroup
+    //if you want to run a mechCommand or mechCommandGroup in parallel with a path, create a boolean array with true values corresponding to the mechCommands you want to run in parallel.
       TEST("test", new Command[]{new SetPivot(PivotState.GROUND), new SetPivot(PivotState.GROUND)}),
       ONEBALLAMP("one ball amp", new Command[]{}),
       BALLSPEAKER("ball speaker", new Command[]{});
 
       String name;
       Command[] mechCommands;
-      
+      boolean[] parallelToPath;
+
+      private AutoType(String a, Command[] mechCommands, boolean[] parallelToPath){
+        name = a;
+        this.mechCommands = mechCommands;
+        this.parallelToPath = parallelToPath;
+      }
 
       private AutoType(String a, Command[] mechCommands){
         name = a;
         this.mechCommands = mechCommands;
+        parallelToPath = new boolean[mechCommands.length];
       }
   }
 }
