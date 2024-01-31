@@ -10,6 +10,7 @@ import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.IntakeShooter;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Vision;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,6 +24,7 @@ public class RobotContainer {
   private final Swerve s_Swerve = Swerve.getInstance();
   private final IntakeShooter s_IntakeShooter = IntakeShooter.getInstance();
   private final Pivot s_Pivot = Pivot.getInstance();
+  private final Vision s_Vision = Vision.getInstance();
 
   private final XboxController driver = new XboxController(0);
   private final XboxController operator = new XboxController(1);

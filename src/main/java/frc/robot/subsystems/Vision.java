@@ -1,24 +1,25 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-public class VisionSubsystem extends SubsystemBase {
-    private static VisionSubsystem instance;
+public class Vision extends SubsystemBase {
+    private static Vision instance;
     private static PhotonCamera aprilTagCamera;
     private static PhotonPipelineResult aprilTagCamResult;
     private static PhotonTrackedTarget lastValidTarget;
 //    private static PhotonCamera visionCamera;
-    public static VisionSubsystem getInstance() {
+    public static Vision getInstance() {
         if (instance == null) {
-            instance = new VisionSubsystem();
+            instance = new Vision();
         }
         return instance;
     }
-    private VisionSubsystem() {
+    private Vision() {
         aprilTagCamera = new PhotonCamera(Constants.Vision.aprilTagCamName);
         updateAprilTagResult();
     }
@@ -49,5 +50,12 @@ public class VisionSubsystem extends SubsystemBase {
             }
         }
         return lastValidTarget;
+    }
+
+    @Override
+    public void periodic() {
+      aprilTagCamResult = aprilTagCamera.getLatestResult();
+      getBestTarget();
+      SmartDashboard.putBoolean("Cam sees", hasTargets());
     }
 }
