@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Pivot.PivotState;
 
@@ -28,6 +27,12 @@ public final class Autos {
   private static Swerve s_Swerve = Swerve.getInstance();
 
   // Return auto selected in Shuffleboard
+  /**
+   * Runs an auto command depending on the AutoType enum variable. Works by assembling all commands
+   * that will be executed in the autopath into one SequentialCommandGroup and then scheduling that 
+   * command group to the command scheduler. 
+   * @param auto AutoType enum representing the auto path that is to be run. 
+   */
   public static void runAutoCommand(AutoType auto) {
 
     ArrayList<ChoreoTrajectory> traj = Choreo.getTrajectoryGroup(auto.name);
@@ -53,7 +58,6 @@ public final class Autos {
       s_Swerve);
       commandsToSchedule.add(swerveCommand);
       commandsToSchedule.add(auto.mechCommands[i]);
-      //CommandScheduler.getInstance().schedule(new SequentialCommandGroup(swerveCommand, auto.mechCommands[i]));
     }
     SequentialCommandGroup group = new SequentialCommandGroup(null);
     for (Command i : commandsToSchedule) {
@@ -64,6 +68,11 @@ public final class Autos {
       // return swerveCommand;
   }
 
+  /*
+   * Enum for the different autos. Contains a name and a mechCommands array. The mechCommands array contains 
+   * all the commands that the mechanisms will use (stuff that is unrelated to the drivetrain). These commands 
+   * will be executed in the order they are in the array during the auto path. Refer to runAutoCommand(AutoType auto).
+   */
   public enum AutoType {
       TEST("test", new Command[]{new SetPivot(PivotState.GROUND), new SetPivot(PivotState.GROUND)}),
       ONEBALLAMP("one ball amp", new Command[]{}),
@@ -71,6 +80,7 @@ public final class Autos {
 
       String name;
       Command[] mechCommands;
+      
 
       private AutoType(String a, Command[] mechCommands){
         name = a;
