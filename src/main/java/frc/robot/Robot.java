@@ -47,8 +47,8 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotInit() {
     m_chooser.addOption("Test", Autos.AutoType.test);
-    m_chooser.addOption("One Ball Amp", Autos.AutoType.oneBallAmp);
-    m_chooser.addOption("Ball Speaker", Autos.AutoType.ballSpeaker);
+    m_chooser.addOption("One Ball Amp", Autos.AutoType.ONEBALLAMP);
+    m_chooser.addOption("Ball Speaker", Autos.AutoType.BALLSPEAKER);
     SmartDashboard.putData("Auto Paths", m_chooser);
 
     m_robotContainer = new RobotContainer();

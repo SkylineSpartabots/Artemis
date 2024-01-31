@@ -6,8 +6,6 @@ package frc.robot.commands;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import javax.smartcardio.CommandAPDU;
-
 import com.choreo.lib.*;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -18,18 +16,16 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.Pivot.PivotState;
 
 public final class Autos {  
       
-  private static Command autoCommand;
-  private static Command selectedAuto;
   ChoreoTrajectory traj;
   private static Swerve s_Swerve = Swerve.getInstance();
-
-  // ArrayList<Command> mechanismCommands = new ArrayList<Command>({new SetPivot(PivotState.GROUND), new SetPivot(PivotState.GROUND)});
-
 
   // Return auto selected in Shuffleboard
   public static void runAutoCommand(AutoType auto) {
@@ -40,6 +36,8 @@ public final class Autos {
     PIDController yController = new PIDController(5, 0, 0);
     PIDController thetaController = new PIDController(2, 0, 0);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+    ArrayList<Command> commands = new ArrayList<Command>();
 
     s_Swerve.resetOdometry(traj.get(0).getInitialPose());
     for(int i = 0; i < traj.size(); i++){
@@ -53,22 +51,23 @@ public final class Autos {
       () -> { Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
         return alliance.isPresent() && alliance.get() == Alliance.Red; }, //decides whether or not the math should be mirrored (depends on alliance)
       s_Swerve);
-      CommandScheduler.getInstance().schedule(swerveCommand);
-      // CommandScheduler.getInstance().schedule(mechanismCommands.get(i));
+      CommandScheduler.getInstance().schedule(new SequentialCommandGroup(swerveCommand, auto.mechCommands[i]));
     }
 
       // return swerveCommand;
   }
 
   public enum AutoType {
-      test("test"),
-      oneBallAmp("one ball amp"),
-      ballSpeaker("ball speaker");
+      TEST("test", new Command[]{new SetPivot(PivotState.GROUND), new SetPivot(PivotState.GROUND)}),
+      ONEBALLAMP("one ball amp", new Command[]{}),
+      BALLSPEAKER("ball speaker", new Command[]{});
 
       String name;
+      Command[] mechCommands;
 
-      private AutoType(String a){
+      private AutoType(String a, Command[] mechCommands){
         name = a;
+        this.mechCommands = mechCommands;
       }
   }
 }
