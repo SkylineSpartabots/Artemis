@@ -37,7 +37,7 @@ public final class Autos {
     PIDController thetaController = new PIDController(2, 0, 0);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    ArrayList<Command> commands = new ArrayList<Command>();
+    ArrayList<Command> commandsToSchedule = new ArrayList<Command>();
 
     s_Swerve.resetOdometry(traj.get(0).getInitialPose());
     for(int i = 0; i < traj.size(); i++){
@@ -51,8 +51,15 @@ public final class Autos {
       () -> { Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
         return alliance.isPresent() && alliance.get() == Alliance.Red; }, //decides whether or not the math should be mirrored (depends on alliance)
       s_Swerve);
-      CommandScheduler.getInstance().schedule(new SequentialCommandGroup(swerveCommand, auto.mechCommands[i]));
+      commandsToSchedule.add(swerveCommand);
+      commandsToSchedule.add(auto.mechCommands[i]);
+      //CommandScheduler.getInstance().schedule(new SequentialCommandGroup(swerveCommand, auto.mechCommands[i]));
     }
+    SequentialCommandGroup group = new SequentialCommandGroup(null);
+    for (Command i : commandsToSchedule) {
+      group.addCommands(i);
+    }
+    CommandScheduler.getInstance().schedule(group);
 
       // return swerveCommand;
   }
