@@ -90,7 +90,7 @@ public class SwerveModule {
     }
     /**
      * Sets the rotation of the angle motor
-     * @param desiredState Desired set state  for PID Controller
+     * @param desiredState Desired set state for PID Controller
      */
     private void setAngle(SwerveModuleState desiredState){
         Rotation2d angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.SwerveConstants.maxSpeed * 0.01)) ? lastAngle : desiredState.angle; //Prevent rotating module if speed is less then 1%. Prevents Jittering.

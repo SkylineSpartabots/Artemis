@@ -145,19 +145,28 @@ public class Swerve extends SubsystemBase {
         }
     }
 
-    // returns pose of the robot
+    /**
+     * 
+     * @return pose of the robot
+     */
     @AutoLogOutput(key = "Odometry/Robot")
     public Pose2d getPose() {
         return swerveOdometry.getEstimatedPosition();
     }
 
-    // resets odometry to the provided pose
+    /**
+     * 
+     * @param pose resets the on-robot odometry to the given pose
+     */
     public void resetOdometry(Pose2d pose) {
         swerveOdometry.resetPosition(pose.getRotation(), getModulePositions(), pose);
         gyro.setYaw(pose.getRotation().getDegrees());
     }
 
-    // gets the state of the swerve modules
+    /**
+     * 
+     * @return gets the state of the swerve modules
+     */
     @AutoLogOutput(key = "SwerveStates/Measured")
     public SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
@@ -167,7 +176,10 @@ public class Swerve extends SubsystemBase {
         return states;
     }
 
-    // gets the voltage and current of the swerve modules
+    /**
+     * 
+     * @return gets the voltage and current of the swerve modules for simulation purposes. Doesn't work atm.
+     */
     @AutoLogOutput(key = "SwerveStates/Measured")
     public Object[] getModulePowers(){
         Object[] powers = new Object[4];
@@ -177,14 +189,25 @@ public class Swerve extends SubsystemBase {
         return powers;
     } 
     
+    /**
+     * sets gyro's yaw to zero
+     */
     public void zeroGyro() {
         gyro.setYaw(0);
     }
 
+    /**
+     * 
+     * @return the yaw from the gyro (Pidgeon 2)
+     */
     public Rotation2d getYaw() {
         return Rotation2d.fromDegrees(normalize(gyro.getYaw().getValue()));
     }
 
+    /**
+     * 
+     * @return gets the pitch from the gyro (Pidgeon 2)
+     */
     public double getPitch() {
         return gyro.getRoll().getValueAsDouble();
     }
@@ -192,6 +215,13 @@ public class Swerve extends SubsystemBase {
     // gyro reports angle cumalitvely not in 360s so this method gets the 360 
     // rotation and tranforms it to the 180 to -180 rotation that is used by the
     // pose class in WPIlib
+    /**
+     * gyro reports angle cumalitvely not in 360s so this method gets the 360 
+     * rotation and tranforms it to the 180 to -180 rotation that is used by the
+     * pose class in WPIlib
+     * @param deg degree from gyro
+     * @return normalized degrees for WPIlib use
+     */
     public static double normalize(double deg) {
         double angle = deg % 360;
         if (angle < -180) {
@@ -202,7 +232,10 @@ public class Swerve extends SubsystemBase {
         return angle;
     }
 
-    // gets the positions of the swerve modules
+    /**
+     * 
+     * @return the positions of the swerve modules
+     */
     public SwerveModulePosition[] getModulePositions() {
         SwerveModulePosition[] positions = new SwerveModulePosition[4];
         for (SwerveModule mod : mSwerveMods) {
@@ -211,7 +244,10 @@ public class Swerve extends SubsystemBase {
         return positions;
     }
 
-    // checks if the swerve is being used for an auto generated path like OTF or auto
+    /**
+     * 
+     * @return whether the swerve is being used for an auto generated path like OTF or auto
+     */
     public boolean pathInProgress() {
         return !getDefaultCommand().isScheduled();
     }   
@@ -224,6 +260,10 @@ public class Swerve extends SubsystemBase {
         this.yTolerance = yTolerance;
     }
 
+    /**
+     * 
+     * @return if the robot is close enough to the desired 2d pose. Used in autonomous
+     */
     public boolean inPosition() {
         return (Math.abs(getPose().getX() - goalPose.getX()) < xTolerance)
                 && (Math.abs(getPose().getY() - goalPose.getY()) < yTolerance)

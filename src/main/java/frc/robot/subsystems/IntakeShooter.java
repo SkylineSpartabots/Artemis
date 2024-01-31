@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import javax.sound.midi.MidiEvent;
+
+import com.ctre.phoenix6.signals.ControlModeValue;
 
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -115,5 +118,4 @@ public class IntakeShooter extends SubsystemBase {
     public boolean hasNote(){
         return m_intakeSensor.getProximity() >= Constants.noteIntakeDistance;
     }
-    
 }

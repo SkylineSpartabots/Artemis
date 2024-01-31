@@ -30,7 +30,4 @@ public class SmartIntake extends Command{
     public boolean isFinished() {
         return s_IntakeShooter.hasNote();
     }
-
-
-
 }
