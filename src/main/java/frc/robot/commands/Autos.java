@@ -3,7 +3,10 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+import java.util.ArrayList;
 import java.util.Optional;
+
+import javax.smartcardio.CommandAPDU;
 
 import com.choreo.lib.*;
 
@@ -13,8 +16,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.Pivot.PivotState;
 
 public final class Autos {  
       
@@ -23,108 +28,47 @@ public final class Autos {
   ChoreoTrajectory traj;
   private static Swerve s_Swerve = Swerve.getInstance();
 
+  // ArrayList<Command> mechanismCommands = new ArrayList<Command>({new SetPivot(PivotState.GROUND), new SetPivot(PivotState.GROUND)});
+
 
   // Return auto selected in Shuffleboard
-  public static Command getAutoCommand(AutoType auto) {
-      switch (auto) {
-      case test:
-          return selectedAuto = test();
-      case oneBallAmp:
-          return selectedAuto = oneBallAmp();
-      case ballSpeaker:
-          return selectedAuto = ballSpeaker();
-      default:
-          break;
-      }
-      return null;
-  }
+  public static void runAutoCommand(AutoType auto) {
 
-  public enum AutoType {
-      test,
-      oneBallAmp,
-      ballSpeaker
-  }
+    ArrayList<ChoreoTrajectory> traj = Choreo.getTrajectoryGroup(auto.name);
 
-  public static Command getSelectedAuto() {
-    return selectedAuto;
-  }
-
-  public static void cancelAutoCommand() {
-    autoCommand.cancel();
-  }
-
-
-  private static Command test() {
-     ChoreoTrajectory test = Choreo.getTrajectory("test");
-    
-    PIDController xController = new PIDController(0, 0, 0);
-    PIDController yController = new PIDController(0, 0, 0);
-    PIDController thetaController = new PIDController(0, 0, 0);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    s_Swerve.resetOdometry(test.getInitialPose());
-    autoCommand = Choreo.choreoSwerveCommand(
-      test, 
-      s_Swerve::getPose, 
-      xController,
-      yController,
-      thetaController,
-      (ChassisSpeeds speeds) -> s_Swerve.autoDrive(speeds, false), //this has to be robot-relative, need to check that auto-drive function works for this (may have to use drive function and set field-relative to false idk)
-      () -> { return true; }, //decides whether or not the math should be mirrored (depends on alliance)
-      s_Swerve);
-
-      return autoCommand;
-  }
-  
-  public static Command oneBallAmp() {
-    
-    ChoreoTrajectory oneBallAmp = Choreo.getTrajectory("r1_1BallAmp");
-    
-    // TODO write real pid values looool
-    PIDController xController = new PIDController(0, 0, 0);
-    PIDController yController = new PIDController(0, 0, 0);
-    PIDController thetaController = new PIDController(0, 0, 0);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    s_Swerve.resetOdometry(oneBallAmp.getInitialPose());
-    autoCommand = Choreo.choreoSwerveCommand(
-      oneBallAmp, 
-      s_Swerve::getPose, 
-      xController,
-      yController,
-      thetaController,
-      (ChassisSpeeds speeds) -> s_Swerve.autoDrive(speeds, false), //this has to be robot-relative, need to check that auto-drive function works for this (may have to use drive function and set field-relative to false idk)
-      () -> {Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
-        return alliance.isPresent() && alliance.get() == Alliance.Red;}, //decides whether or not the math should be mirrored (depends on alliance)
-      s_Swerve);
-
-      return autoCommand;
-  }
-
-  public static Command ballSpeaker() {
-    
-    ChoreoTrajectory ballSpeaker = Choreo.getTrajectory("r1_1BallSpeaker");
-    
     PIDController xController = new PIDController(5, 0, 0);
     PIDController yController = new PIDController(5, 0, 0);
     PIDController thetaController = new PIDController(2, 0, 0);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    s_Swerve.resetOdometry(ballSpeaker.getInitialPose());
-    autoCommand = Choreo.choreoSwerveCommand(
-      ballSpeaker, 
+    s_Swerve.resetOdometry(traj.get(0).getInitialPose());
+    for(int i = 0; i < traj.size(); i++){
+      Command swerveCommand = Choreo.choreoSwerveCommand(
+      traj.get(i), 
       s_Swerve::getPose, 
       xController,
       yController,
       thetaController,
       (ChassisSpeeds speeds) -> s_Swerve.autoDrive(speeds, false), //this has to be robot-relative, need to check that auto-drive function works for this (may have to use drive function and set field-relative to false idk)
-      () -> { return true; }, //decides whether or not the math should be mirrored (depends on alliance)
+      () -> { Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
+        return alliance.isPresent() && alliance.get() == Alliance.Red; }, //decides whether or not the math should be mirrored (depends on alliance)
       s_Swerve);
+      CommandScheduler.getInstance().schedule(swerveCommand);
+      // CommandScheduler.getInstance().schedule(mechanismCommands.get(i));
+    }
 
-      return autoCommand;
+      // return swerveCommand;
   }
 
-  private Autos() {
-      throw new UnsupportedOperationException("This is a utility class!");
+  public enum AutoType {
+      test("test"),
+      oneBallAmp("one ball amp"),
+      ballSpeaker("ball speaker");
+
+      String name;
+
+      private AutoType(String a){
+        name = a;
+      }
   }
 }
