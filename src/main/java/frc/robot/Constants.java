@@ -76,6 +76,7 @@ public final class Constants {
 
   public static final double FIELD_WIDTH_METERS = 8.21055;
   public static final double FIELD_LENGTH_METERS = 16.54175;
+  public static final double maxSpeakerScoringRange = 0; //TODO find the max distance from which we can score in speaker
 
   public static final IdleMode intakeNeutralMode = IdleMode.kCoast;
   public static final IdleMode shooterNeutralMode = IdleMode.kBrake;
