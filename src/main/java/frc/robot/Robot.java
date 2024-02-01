@@ -53,6 +53,7 @@ public class Robot extends LoggedRobot {
     m_chooser.addOption("Ball Speaker", Autos.AutoType.BALLSPEAKER);
     m_chooser.addOption("Test Path", Autos.AutoType.TESTPATH);
     m_chooser.setDefaultOption("Test Path", Autos.AutoType.TESTPATH);
+    m_chooser.setDefaultOption("test test", Autos.AutoType.TESTTEST);
     SmartDashboard.putData("Auto Paths", m_chooser);
 
     

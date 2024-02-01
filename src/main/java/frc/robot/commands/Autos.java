@@ -95,7 +95,8 @@ public final class Autos {
       TEST("test", new Command[]{}),
       ONEBALLAMP("one ball amp", new Command[]{}),
       BALLSPEAKER("ball speaker", new Command[]{}),
-      TESTPATH("TestPath", new Command[]{new InstantCommand()});
+      TESTPATH("TestPath", new Command[]{new InstantCommand()}),
+      TESTTEST("testtest", new Command[]{});
 
       String name;
       Command[] mechCommands;
@@ -105,6 +106,7 @@ public final class Autos {
         name = a;
         this.mechCommands = mechCommands;
         this.parallelToPath = parallelToPath;
+        
       }
 
       private AutoType(String a, Command[] mechCommands){

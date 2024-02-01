@@ -303,14 +303,59 @@
                         "first"
                     ],
                     "type": "StopPoint",
-                    "uuid": "dc1473d3-c7a3-4d94-866e-bde11c323887"
+                    "uuid": "b638f1fd-41ab-4a20-874d-d4c9429fdc74",
+                    "direction": 0
                 },
                 {
                     "scope": [
                         "last"
                     ],
                     "type": "StopPoint",
-                    "uuid": "a2a32d1e-c0f3-4cf3-a34c-c6cba0be2e31"
+                    "uuid": "ce104402-10d5-4d35-b746-dfc3342b08e0",
+                    "direction": 0
+                }
+            ],
+            "usesControlIntervalGuessing": true,
+            "defaultControlIntervalCount": 40,
+            "usesDefaultFieldObstacles": true,
+            "circleObstacles": []
+        },
+        "testtest": {
+            "waypoints": [
+                {
+                    "x": 2.5015885829925537,
+                    "y": 6.46366548538208,
+                    "heading": 0,
+                    "isInitialGuess": false,
+                    "translationConstrained": true,
+                    "headingConstrained": true,
+                    "controlIntervalCount": 40
+                },
+                {
+                    "x": 6.10739278793335,
+                    "y": 6.405193328857422,
+                    "heading": 3.14,
+                    "isInitialGuess": false,
+                    "translationConstrained": true,
+                    "headingConstrained": true,
+                    "controlIntervalCount": 40
+                }
+            ],
+            "trajectory": [],
+            "constraints": [
+                {
+                    "scope": [
+                        "first"
+                    ],
+                    "type": "StopPoint",
+                    "uuid": "e3cb23d1-a897-4c5c-9148-077712d5976d"
+                },
+                {
+                    "scope": [
+                        "last"
+                    ],
+                    "type": "StopPoint",
+                    "uuid": "a4578151-db9c-40fb-8331-1517e7c6d0ce"
                 }
             ],
             "usesControlIntervalGuessing": true,
