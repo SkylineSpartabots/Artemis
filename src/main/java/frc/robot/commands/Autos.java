@@ -9,6 +9,8 @@ import java.util.Optional;
 import com.choreo.lib.*;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -41,9 +43,9 @@ public final class Autos {
     traj.add(Choreo.getTrajectory(auto.name));
     //ArrayList<ChoreoTrajectory> traj = Choreo.getTrajectoryGroup(auto.name);
 
-    PIDController xController = new PIDController(5, 0, 0);
-    PIDController yController = new PIDController(5, 0, 0);
-    PIDController thetaController = new PIDController(2, 0, 0);
+    PIDController xController = new PIDController(0.2, 0, 0);
+    PIDController yController = new PIDController(0.2, 0, 0);
+    PIDController thetaController = new PIDController(0.1, 0, 0);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
     ArrayList<Command> commandsToSchedule = new ArrayList<Command>();
@@ -56,7 +58,7 @@ public final class Autos {
       xController,
       yController,
       thetaController,
-      (ChassisSpeeds speeds) -> s_Swerve.autoDrive(speeds, false), //this has to be robot-relative, need to check that auto-drive function works for this (may have to use drive function and set field-relative to false idk)
+      (ChassisSpeeds speeds) -> s_Swerve.drive(new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond), speeds.omegaRadiansPerSecond, false, true), //this has to be robot-relative, need to check that auto-drive function works for this (may have to use drive function and set field-relative to false idk)
       () -> { Optional<DriverStation.Alliance> alliance = DriverStation.getAlliance();
         return alliance.isPresent() && alliance.get() == Alliance.Red; }, //decides whether or not the math should be mirrored (depends on alliance)
       s_Swerve);
