@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -36,7 +37,9 @@ public final class Autos {
    */
   public static void runAutoCommand(AutoType auto) {
 
-    ArrayList<ChoreoTrajectory> traj = Choreo.getTrajectoryGroup(auto.name);
+    ArrayList<ChoreoTrajectory> traj = new ArrayList<>();
+    traj.add(Choreo.getTrajectory(auto.name));
+    //ArrayList<ChoreoTrajectory> traj = Choreo.getTrajectoryGroup(auto.name);
 
     PIDController xController = new PIDController(5, 0, 0);
     PIDController yController = new PIDController(5, 0, 0);
@@ -87,9 +90,10 @@ public final class Autos {
     //when writing enums, if you want multiple mechCommands to run before the next path, put them in a sequential command group
     //if you want those mechCommands to run in parallel, put them in a parallelCommandGroup
     //if you want to run a mechCommand or mechCommandGroup in parallel with a path, create a boolean array with true values corresponding to the mechCommands you want to run in parallel.
-      TEST("test", new Command[]{new SetPivot(PivotState.GROUND), new SetPivot(PivotState.GROUND)}),
+      TEST("test", new Command[]{}),
       ONEBALLAMP("one ball amp", new Command[]{}),
-      BALLSPEAKER("ball speaker", new Command[]{});
+      BALLSPEAKER("ball speaker", new Command[]{}),
+      TESTPATH("TestPath", new Command[]{new InstantCommand()});
 
       String name;
       Command[] mechCommands;

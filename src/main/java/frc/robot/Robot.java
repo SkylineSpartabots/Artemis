@@ -20,6 +20,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import frc.robot.commands.Autos;
+import frc.robot.commands.Autos.AutoType;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -30,7 +31,7 @@ import frc.robot.commands.Autos;
 public class Robot extends LoggedRobot {
 
   private Command m_autonomousCommand;
-  private final SendableChooser<Autos.AutoType> m_chooser = new SendableChooser<>();
+  private final SendableChooser<Autos.AutoType> m_chooser = new SendableChooser<Autos.AutoType>();
   private RobotContainer m_robotContainer;
 
     
@@ -43,15 +44,18 @@ public class Robot extends LoggedRobot {
   // Control the mode of the robot
   public static final RobotMode mode = Robot.isReal() ? RobotMode.REAL : RobotMode.SIM;
 
-  @SuppressWarnings(value = "resource")
+  //@SuppressWarnings(value = "resource")
   @Override
   public void robotInit() {
+    m_robotContainer = new RobotContainer();
     m_chooser.addOption("Test", Autos.AutoType.TEST);
     m_chooser.addOption("One Ball Amp", Autos.AutoType.ONEBALLAMP);
     m_chooser.addOption("Ball Speaker", Autos.AutoType.BALLSPEAKER);
+    m_chooser.addOption("Test Path", Autos.AutoType.TESTPATH);
+    m_chooser.setDefaultOption("Test Path", Autos.AutoType.TESTPATH);
     SmartDashboard.putData("Auto Paths", m_chooser);
 
-    m_robotContainer = new RobotContainer();
+    
     Logger.recordMetadata("Codebase", "2976 2024");
     switch (mode) {
       case REAL:

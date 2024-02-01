@@ -21,8 +21,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Swerve s_Swerve = Swerve.getInstance();
-  private final IntakeShooter s_IntakeShooter = IntakeShooter.getInstance();
-  private final Pivot s_Pivot = Pivot.getInstance();
+  //private final IntakeShooter s_IntakeShooter = IntakeShooter.getInstance();
+  //private final Pivot s_Pivot = Pivot.getInstance();
 
   private final XboxController driver = new XboxController(0);
   private final XboxController operator = new XboxController(1);
@@ -100,8 +100,8 @@ public class RobotContainer {
     // driver controls
     driverBack.onTrue(new InstantCommand(() -> s_Swerve.resetOdometry(new Pose2d())));
 
-    driverA.onTrue(new InstantCommand(() -> s_IntakeShooter.setPercentage(1.0)));
-    driverB.onTrue(new InstantCommand(() -> s_IntakeShooter.setPercentage(0)));
+    //driverA.onTrue(new InstantCommand(() -> s_IntakeShooter.setPercentage(1.0)));
+    //driverB.onTrue(new InstantCommand(() -> s_IntakeShooter.setPercentage(0)));
 
   }
 
