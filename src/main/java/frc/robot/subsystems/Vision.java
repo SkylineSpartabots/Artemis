@@ -58,12 +58,4 @@ public class Vision extends SubsystemBase {
         }
         return lastValidTarget;
     }
-
-    public Rotation2d getTargetYaw() {
-        targetYaw = PhotonUtils.getYawToPose(null, null)
-    }
-
-    public void periodic() {
-         SmartDashboard.putBoolean("Has Scoring Target", getTargets().contains(4) || getTargets().contains(7));
-    }
 }
