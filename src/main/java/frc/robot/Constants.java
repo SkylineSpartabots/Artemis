@@ -43,13 +43,15 @@ public final class Constants {
   }
   public static final class HardwarePorts {
     // motors (predicted) IDs not fixed
-    public static final int shooterLeaderMotor = 22;
-    public static final int shooterFollowerMotor = 23;
-    public static final int intakeMotor = 24;
-    public static final int climbLeaderMotor = 3;
-    public static final int climbFollowerMotor = 4;
-    public static final int pivotMotor = 30;
-    public static final int pivotCANcoderID = 31;
+    public static final int shooterLeaderM = 3;
+    public static final int shooterFollowerM = 4;
+    public static final int indexerM = 5;
+    public static final int intakeLeaderM = 1;
+    public static final int intakeFollowerM = 2;
+
+
+    public static final int climbLeaderMotor = 0;
+    public static final int climbFollowerMotor = 0;
 
   }
 
