@@ -42,29 +42,29 @@ private CANSparkMax shooterLeaderM;
   public enum ShooterStates {
     MAX(1),
     OFF(0);
-    private double voltage;
+    private double speed;
   
     public double getValue() {
-      return voltage;
+      return speed;
     }
 
-    ShooterStates(double voltage) {
-      this.voltage = voltage;
+    ShooterStates(double speed) {
+      this.speed = speed;
     }
     
   }
 
-  public void setVoltage(ShooterStates state) { //change state
-    shooterLeaderM.set(state.voltage);
+  public void setspeed(ShooterStates state) { //change state
+    shooterLeaderM.set(state.speed);
     currentSpeed = state.getValue();
   }
 
-  public void setVoltage(double newVoltage) { //change specific voltage
-    shooterFollowerM.set(newVoltage);
-    currentSpeed = newVoltage;
+  public void setspeed(double newspeed) { //change specific speed
+    shooterFollowerM.set(newspeed);
+    currentSpeed = newspeed;
   }
 
-  public double getVoltage() { //gets specific voltage (i hope)
+  public double getspeed() { //gets specific speed (i hope)
     return currentSpeed;
   }
 
