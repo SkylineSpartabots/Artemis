@@ -60,7 +60,10 @@ private CANSparkMax intakeLeaderM;
   
   @Override
   public void periodic() {
-    SmartDashboard.putString("Intake state", state);
+    if (state != null) 
+      SmartDashboard.putString("Intake state", state);
+    
+    // SmartDashboard.putString("Intake state", state);
   }
 
   @Override
