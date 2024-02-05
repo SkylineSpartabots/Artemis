@@ -52,6 +52,9 @@ private CANSparkMax indexerM;
     this.state = state.name();
   }
 
+  public void setSpeed(double speed) {
+    indexerM.set(speed);
+  }
   
   @Override
   public void periodic() {

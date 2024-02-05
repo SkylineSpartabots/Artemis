@@ -7,21 +7,21 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class SetShooter extends Command {
   private final ArnavShooter s_ArnavShooter;
-  double finalspeed;
+  double finalSpeed;
   
   public SetShooter(ArnavShooter.ShooterStates state) { //change from off or max speed
     s_ArnavShooter = ArnavShooter.getInstance();
-    finalspeed = state.getValue();
+    finalSpeed = state.getValue();
     addRequirements(s_ArnavShooter);
   }
 
   public SetShooter(double difference) { //increase or decrease speed. Makes sure not to increase above max or decrease below 0
     s_ArnavShooter = ArnavShooter.getInstance();
 
-    double addedspeed = s_ArnavShooter.getspeed() + difference;
+    double addedSpeed = s_ArnavShooter.getSpeed() + difference;
 
-    if(addedspeed <= 1 && addedspeed >= 0) {
-      finalspeed = addedspeed;
+    if(addedSpeed <= 1 && addedSpeed >= 0) {
+      finalSpeed = addedSpeed;
     }
 
     addRequirements(s_ArnavShooter);
@@ -34,7 +34,7 @@ public class SetShooter extends Command {
 
   @Override
   public void execute() {
-        s_ArnavShooter.setspeed(finalspeed);
+        s_ArnavShooter.setSpeed(finalSpeed);
   }
 
   @Override

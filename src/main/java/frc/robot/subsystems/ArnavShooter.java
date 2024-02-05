@@ -54,17 +54,17 @@ private CANSparkMax shooterLeaderM;
     
   }
 
-  public void setspeed(ShooterStates state) { //change state
+  public void setSpeed(ShooterStates state) { //change state
     shooterLeaderM.set(state.speed);
     currentSpeed = state.getValue();
   }
 
-  public void setspeed(double newspeed) { //change specific speed
-    shooterFollowerM.set(newspeed);
-    currentSpeed = newspeed;
+  public void setSpeed(double newSpeed) { //change specific Speed
+    shooterLeaderM.set(newSpeed);
+    currentSpeed = newSpeed;
   }
 
-  public double getspeed() { //gets specific speed (i hope)
+  public double getSpeed() { //gets specific Speed (i hope)
     return currentSpeed;
   }
 

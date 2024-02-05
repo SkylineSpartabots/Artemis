@@ -10,6 +10,9 @@ import frc.robot.commands.SetIntake;
 import frc.robot.commands.SetShooter;
 import frc.robot.subsystems.ArnavIntake.IntakeStates;
 import frc.robot.subsystems.ArnavShooter.ShooterStates;
+import frc.robot.subsystems.ArnavIndexer;
+import frc.robot.subsystems.ArnavIntake;
+import frc.robot.subsystems.ArnavShooter;
 // import frc.robot.commands.Autos;
 // import frc.robot.commands.ExampleCommand;
 // import frc.robot.commands.TeleopSwerve;
@@ -30,6 +33,9 @@ public class RobotContainer {
   private final Swerve s_Swerve = Swerve.getInstance();
   //private final IntakeShooter s_IntakeShooter = IntakeShooter.getInstance();
   //private final Pivot s_Pivot = Pivot.getInstance();
+  private final ArnavIndexer s_ArnavIndexer = ArnavIndexer.getInstance();
+  private final ArnavIntake s_ArnavIntake = ArnavIntake.getInstance();
+  private final ArnavShooter s_ArnavShooter = ArnavShooter.getInstance();
 
   private final XboxController driver = new XboxController(0);
   private final XboxController operator = new XboxController(1);
@@ -119,7 +125,7 @@ public class RobotContainer {
     // driverY.whileTrue(s_Swerve.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
   // shooter
-  operatorDpadUp.onTrue(maxShooter());
+  operatorDpadUp.onTrue(new InstantCommand(() -> s_ArnavIndexer.setSpeed(0.5))); // An instant command just for testing right now
   operatorDpadDown.onTrue(offShooter());
   operatorDpadRight.whileTrue(increaseShooter());
   operatorDpadLeft.whileTrue(decreaseShooter());
@@ -140,6 +146,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+
 
     //shooter
   public Command maxShooter() {
